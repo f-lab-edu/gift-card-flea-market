@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev # 활성화할 profile
+
+---
+# development
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+# production
+spring:
+  config:
+    activate:
+      on-profile: prod
