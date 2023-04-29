@@ -2,6 +2,10 @@ spring:
   profiles:
     active: dev # 활성화할 profile
 
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.ghm.giftcardfleamarket.user.domain
+
 ---
 # development
 spring:
