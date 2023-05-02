@@ -1,11 +1,14 @@
 package com.ghm.giftcardfleamarket.user.service;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.ghm.giftcardfleamarket.user.domain.User;
 import com.ghm.giftcardfleamarket.user.dto.request.SignUpRequest;
-import com.ghm.giftcardfleamarket.user.encrypt.BcryptPasswordEncryptor;
-import com.ghm.giftcardfleamarket.user.exception.NotUniqueUserIdException;
+import com.ghm.giftcardfleamarket.user.encrypt.PasswordEncryptor;
+import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
+import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
+import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -15,19 +18,30 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserMapper userMapper;
-	private final BcryptPasswordEncryptor passwordEncryptor;
+	private final PasswordEncryptor passwordEncryptor;
 
 	public void singUp(SignUpRequest signUpRequest) {
-		checkUserIdDuplicate(signUpRequest.getUserId());    // 아이디 중복체크
+		String digest = passwordEncryptor.encrypt(signUpRequest.getPassword());
+		User newUser = signUpRequest.toEntity(digest);
 
-		String digest = passwordEncryptor.encrypt(signUpRequest.getPassword());    // 비밀번호 암호화
-		User newUser = signUpRequest.toEntity(digest);    // UserDto to Entity
-		userMapper.saveUser(newUser);
+		try {
+			userMapper.saveUser(newUser);
+		} catch (DuplicateKeyException e) {
+			if (e.getMessage().contains(newUser.getUserId())) {
+				throw new DuplicatedUserIdException("중복된 아이디입니다.");
+			}
+			if (e.getMessage().contains(newUser.getEmail())) {
+				throw new DuplicatedEmailException("중복된 이메일입니다.");
+			}
+			if (e.getMessage().contains(newUser.getPhone())) {
+				throw new DuplicatedPhoneException("중복된 휴대폰 번호입니다.");
+			}
+		}
 	}
 
-	public void checkUserIdDuplicate(String userId) {
+	public void checkUserIdDuplication(String userId) {
 		if (userMapper.hasUserId(userId)) {
-			throw new NotUniqueUserIdException("아이디 중복! 다시 입력해 주세요.");
+			throw new DuplicatedUserIdException("중복된 아이디입니다.");
 		}
 	}
 }
