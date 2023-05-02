@@ -30,7 +30,7 @@ public class UserController {
 
 	@GetMapping("/check-duplication/{userId}")
 	public ResponseEntity<Boolean> checkUserIdDuplication(@PathVariable String userId) {
-		userService.checkUserIdDuplicate(userId);
+		userService.checkUserIdDuplication(userId);
 		return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
 	}
 }
