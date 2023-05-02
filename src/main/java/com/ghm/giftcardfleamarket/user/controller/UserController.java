@@ -22,22 +22,14 @@ public class UserController {
 
 	private final UserService userService;
 
-	/**
-	 * 회원가입 절차 중 총 2번의 아이디 중복체크를 실행합니다.
-	 * 	1. 아이디 입력 직후
-	 * 	2. 최종 회원가입 요청
-	 *
-	 * 아이디 입력 직후에 중복된 아이디가 없을지라도,
-	 * 최종 회원가입 전에 다른 유저가 동일한 아이디로 가입했을 경우를 대비하기 위함입니다.
-	 */
 	@PostMapping
-	ResponseEntity<String> signUp(@RequestBody @Validated SignUpRequest signUpRequest) {
+	public ResponseEntity<String> signUp(@RequestBody @Validated SignUpRequest signUpRequest) {
 		userService.singUp(signUpRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@GetMapping("/check-duplicate/{userId}")
-	public ResponseEntity<Boolean> checkUserIdDuplicate(@PathVariable String userId) {
+	@GetMapping("/check-duplication/{userId}")
+	public ResponseEntity<Boolean> checkUserIdDuplication(@PathVariable String userId) {
 		userService.checkUserIdDuplicate(userId);
 		return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
 	}
