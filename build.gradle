@@ -29,6 +29,8 @@ dependencies {
     runtimeOnly 'com.h2database:h2' // H2
     runtimeOnly 'com.mysql:mysql-connector-j'   // MySQL
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'  // MyBatis
+
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'   // bcrypt 암호화
 }
 
 tasks.named('test') {
