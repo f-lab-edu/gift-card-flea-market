@@ -12,18 +12,12 @@ import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(DuplicatedUserIdException.class)
-	public ResponseEntity<String> handleDuplicatedUserIdException(DuplicatedUserIdException e) {
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-	}
-
-	@ExceptionHandler(DuplicatedEmailException.class)
-	public ResponseEntity<String> handleDuplicatedEmailException(DuplicatedEmailException e) {
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-	}
-
-	@ExceptionHandler(DuplicatedPhoneException.class)
-	public ResponseEntity<String> handleDuplicatedPhoneException(DuplicatedPhoneException e) {
+	@ExceptionHandler({
+		DuplicatedUserIdException.class,
+		DuplicatedEmailException.class,
+		DuplicatedPhoneException.class
+	})
+	public ResponseEntity<String> handleDuplicatedExceptions(RuntimeException e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 	}
 }
