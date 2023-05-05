@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
+import com.ghm.giftcardfleamarket.user.exception.verification.SmsSendFailedException;
+import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeMisMatchException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,5 +21,15 @@ public class GlobalExceptionHandler {
 	})
 	public ResponseEntity<String> handleDuplicatedExceptions(RuntimeException e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(SmsSendFailedException.class)
+	public ResponseEntity<String> handleSmsSendFailedException(SmsSendFailedException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(VerificationCodeMisMatchException.class)
+	public ResponseEntity<String> handleVerificationCodeMisMatchException(VerificationCodeMisMatchException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
