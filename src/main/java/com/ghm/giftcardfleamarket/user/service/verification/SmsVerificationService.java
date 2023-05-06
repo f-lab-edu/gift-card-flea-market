@@ -33,9 +33,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SmsVerificationService {
 
-	private final RestTemplate restTemplate;
-	private final SmsVerificationDao smsCertificationDao;
-
 	private static final String ACCESS_KEY = "iJPkzp82Zq6cU4XgmuQv";
 	private static final String SECRET_KEY = "Rtfhw7caZMJyOksfnRcVTH897dhi7ndAnbx62Oei";
 	private static final String SERVICE_ID = "ncp:sms:kr:306692833450:flea_market";
@@ -43,7 +40,9 @@ public class SmsVerificationService {
 	private static final String REQUEST_URL =
 		"https://sens.apigw.ntruss.com/sms/v2/services/" + SERVICE_ID + "/messages";
 
-	// 네이버 SMS API를 이용해 인증번호 발송하고 Redis에 저장
+	private final RestTemplate restTemplate;
+	private final SmsVerificationDao smsCertificationDao;
+
 	public void sendSms(String phone) throws JsonProcessingException {
 		HttpHeaders headers = makeSmsApiRequestHeaders();
 		String verificationCode = makeVerificationCode();
@@ -59,7 +58,6 @@ public class SmsVerificationService {
 		smsCertificationDao.saveVerificationCode(phone, verificationCode);
 	}
 
-	// 네이버 SMS API로 보낼 요청 헤더 생성
 	private HttpHeaders makeSmsApiRequestHeaders() {
 		String timestamp = Long.toString(System.currentTimeMillis());
 
@@ -75,7 +73,6 @@ public class SmsVerificationService {
 		return String.valueOf(new Random().nextInt(900000) + 100000);
 	}
 
-	// 네이버 SMS API로 보낼 요청 바디 생성
 	private SmsApiRequest makeSmsApiRequestBody(String phone, String verificationCode) {
 		List<MessageRequest> messages = new ArrayList<>();
 		messages.add(MessageRequest.builder()
@@ -93,7 +90,6 @@ public class SmsVerificationService {
 			.build();
 	}
 
-	// 인증 번호 확인
 	public void verifyVerificationCode(SmsVerificationRequest smsRequest) {
 		String findCode = smsCertificationDao.getVerificationCode(smsRequest.getPhone());
 		if (!smsRequest.getVerificationCode().equals(findCode)) {
