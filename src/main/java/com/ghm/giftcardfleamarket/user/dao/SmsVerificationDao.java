@@ -15,10 +15,10 @@ public class SmsVerificationDao {
 	private final StringRedisTemplate redisTemplate;
 
 	@Value("${spring.data.redis.timeout}")
-	private long TIME_OUT;
+	private long TIMEOUT_IN_MILLIS;
 
 	public void saveVerificationCode(String phone, String verificationCode) {
-		redisTemplate.opsForValue().set(phone, verificationCode, Duration.ofMillis(TIME_OUT));
+		redisTemplate.opsForValue().set(phone, verificationCode, Duration.ofMillis(TIMEOUT_IN_MILLIS));
 	}
 
 	public String getVerificationCode(String phone) {
