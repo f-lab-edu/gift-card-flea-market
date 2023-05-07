@@ -39,7 +39,7 @@ public class SmsVerificationService {
 
 		SmsApiResponse smsApiResponse = restTemplate.postForObject(REQUEST_URL, httpRequest, SmsApiResponse.class);
 		if (smsApiResponse.getStatusName().equals("fail")) {
-			throw new SmsSendFailedException("SMS 전송에 실패하였습니다.");
+			throw new SmsSendFailedException(smsApiResponse.getStatusCode());
 		}
 		smsCertificationDao.saveVerificationCode(phone, verificationCode);
 	}
