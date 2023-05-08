@@ -25,27 +25,8 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(SmsSendFailedException.class)
 	public ResponseEntity<String> handleSmsSendFailedException(SmsSendFailedException e) {
-		HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-
-		switch (e.getErrorCode()) {
-			case "400":
-				httpStatus = HttpStatus.BAD_REQUEST;
-				break;
-			case "401":
-				httpStatus = HttpStatus.UNAUTHORIZED;
-				break;
-			case "403":
-				httpStatus = HttpStatus.FORBIDDEN;
-				break;
-			case "404":
-				httpStatus = HttpStatus.NOT_FOUND;
-				break;
-			case "429":
-				httpStatus = HttpStatus.TOO_MANY_REQUESTS;
-				break;
-		}
-
-		return new ResponseEntity<>(httpStatus);
+		int statusCode = Integer.parseInt(e.getErrorCode());
+		return new ResponseEntity<>(HttpStatus.valueOf(statusCode));
 	}
 
 	@ExceptionHandler(VerificationCodeMisMatchException.class)
