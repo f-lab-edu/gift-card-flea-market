@@ -1,6 +1,11 @@
 spring:
   profiles:
     active: dev
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 180000  # 밀리초 단위로 설정
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
