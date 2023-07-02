@@ -5,7 +5,7 @@
 <mapper namespace="com.ghm.giftcardfleamarket.user.mapper.UserMapper">
 
     <insert id="saveUser" parameterType="User">
-        INSERT INTO users (user_id, password, email, phone, created_at)
+        INSERT INTO user (user_id, password, email, phone, created_at)
         VALUES (#{userId}, #{password}, #{email}, #{phone}, #{createdAt})
     </insert>
 
