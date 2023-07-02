@@ -1,40 +1,21 @@
+server:
+  port: 8080
+
 spring:
-  profiles:
-    active: dev
+  # MySQL
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Redis
   data:
     redis:
-      host: localhost
       port: 6379
       timeout: 180000  # 밀리초 단위로 설정
+
+  # DB 접속 정보 숨기기
+  profiles:
+    include: secret
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.ghm.giftcardfleamarket.user.domain
-
----
-# development
-spring:
-  config:
-    activate:
-      on-profile: dev
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  datasource:
-    url: jdbc:h2:mem:test;MODE=MySQL
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
-
----
-# production
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/flea_market
-    username: root
-    password: 1234
