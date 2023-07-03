@@ -11,8 +11,6 @@ on:
   pull_request:
     branches:
       - main
-    types:
-      - opened
 
 permissions:
   contents: read
