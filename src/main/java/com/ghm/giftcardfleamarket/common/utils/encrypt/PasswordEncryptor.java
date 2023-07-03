@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.user.encrypt;
+package com.ghm.giftcardfleamarket.common.utils.encrypt;
 
 public interface PasswordEncryptor {
 

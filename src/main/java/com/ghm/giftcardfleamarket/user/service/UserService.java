@@ -3,9 +3,9 @@ package com.ghm.giftcardfleamarket.user.service;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import com.ghm.giftcardfleamarket.common.utils.encrypt.PasswordEncryptor;
 import com.ghm.giftcardfleamarket.user.domain.User;
 import com.ghm.giftcardfleamarket.user.dto.request.SignUpRequest;
-import com.ghm.giftcardfleamarket.user.encrypt.PasswordEncryptor;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
