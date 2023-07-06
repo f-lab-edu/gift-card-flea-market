@@ -22,11 +22,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        run: |
-          cd app/flea-market/gift-card-flea-market
-          touch ./src/main/resources/application-secret.yml
-          echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application-secret.yml
-          cat ./src/main/resources/application-secret.yml
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
