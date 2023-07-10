@@ -20,7 +20,7 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final PasswordEncryptor passwordEncryptor;
 
-	public void singUp(SignUpRequest signUpRequest) {
+	public void signUp(SignUpRequest signUpRequest) {
 		String digest = passwordEncryptor.encrypt(signUpRequest.getPassword());
 		User newUser = signUpRequest.toEntity(digest);
 
