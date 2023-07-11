@@ -45,7 +45,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 성공")
+	@DisplayName("회원가입 성공에 성공한다.")
 	void signUpSuccess() {
 		willDoNothing().given(userMapper).saveUser(any(User.class));
 
@@ -55,7 +55,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패: 아이디 중복")
+	@DisplayName("아이디 중복으로 회원가입에 실패한다.")
 	void signUpWithDuplicatedUserId() {
 		// given
 		DuplicateKeyException exception = new DuplicateKeyException(signUpRequest.getUserId());
@@ -69,7 +69,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패: 이메일 중복")
+	@DisplayName("이메일 중복으로 회원가입에 실패한다.")
 	void signUpWithDuplicatedEmail() {
 		// given
 		DuplicateKeyException exception = new DuplicateKeyException(signUpRequest.getEmail());
@@ -83,7 +83,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패: 휴대폰 번호 중복")
+	@DisplayName("휴대폰 번호 중복으로 회원가입에 실패한다.")
 	void signUpWitDuplicatedPhone() {
 		// given
 		DuplicateKeyException exception = new DuplicateKeyException(signUpRequest.getPhone());
@@ -97,7 +97,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("아이디 중복체크 성공")
+	@DisplayName("아이디 중복체크에 성공한다.")
 	void checkUserIdDuplicationSuccess() {
 		given(userMapper.hasUserId(signUpRequest.getUserId())).willReturn(false);
 
@@ -107,7 +107,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("아이디 중복체크 실패")
+	@DisplayName("아이디 중복으로 아이디 중복체크 실패한다.")
 	void checkUserIdDuplicationWithDuplicatedUserId() {
 		// given
 		given(userMapper.hasUserId(signUpRequest.getUserId())).willReturn(true);
