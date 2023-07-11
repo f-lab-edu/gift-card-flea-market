@@ -28,7 +28,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<String> signUp(@RequestBody @Validated SignUpRequest signUpRequest) {
-		userService.singUp(signUpRequest);
+		userService.signUp(signUpRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
