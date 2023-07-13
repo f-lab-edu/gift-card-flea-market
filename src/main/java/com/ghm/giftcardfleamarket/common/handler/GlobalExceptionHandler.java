@@ -10,6 +10,7 @@ import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
 import com.ghm.giftcardfleamarket.user.exception.verification.SmsSendFailedException;
 import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeMisMatchException;
+import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeTimeOutException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,8 +30,8 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(HttpStatus.valueOf(statusCode));
 	}
 
-	@ExceptionHandler(VerificationCodeMisMatchException.class)
-	public ResponseEntity<String> handleVerificationCodeMisMatchException(VerificationCodeMisMatchException e) {
+	@ExceptionHandler({VerificationCodeMisMatchException.class, VerificationCodeTimeOutException.class})
+	public ResponseEntity<String> handleVerificationCodeException(RuntimeException e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
