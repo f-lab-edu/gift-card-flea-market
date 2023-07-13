@@ -3,9 +3,13 @@ package com.ghm.giftcardfleamarket.user.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SmsVerificationRequest {
 
 	@NotBlank(message = "휴대폰 번호 입력은 필수입니다.")

@@ -107,7 +107,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("아이디 중복으로 아이디 중복체크 실패한다.")
+	@DisplayName("아이디 중복으로 아이디 중복체크에 실패한다.")
 	void checkUserIdDuplicationWithDuplicatedUserId() {
 		// given
 		given(userMapper.hasUserId(signUpRequest.getUserId())).willReturn(true);
