@@ -88,7 +88,6 @@ public class SmsVerificationServiceTest {
 
 	@Test
 	@DisplayName("3분이 지나 만료된 인증번호를 입력해 인증에 실패한다.")
-		//@Timeout(value = 2, unit = TimeUnit.SECONDS)
 	void verifyWithTimeOutVerificationCode() {
 		// given
 		SmsVerificationRequest smsRequest = new SmsVerificationRequest("01012345678", "111111");
