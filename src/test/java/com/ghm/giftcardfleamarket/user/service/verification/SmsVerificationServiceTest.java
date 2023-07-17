@@ -8,6 +8,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +18,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ghm.giftcardfleamarket.common.utils.SmsVerificationUtil;
 import com.ghm.giftcardfleamarket.user.dao.SmsVerificationDao;
 import com.ghm.giftcardfleamarket.user.dto.request.SmsVerificationRequest;
 import com.ghm.giftcardfleamarket.user.dto.response.SmsApiResponse;
@@ -24,7 +26,7 @@ import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeMi
 import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeTimeOutException;
 
 @AutoConfigureWebClient(registerRestTemplate = true)
-@RestClientTest(components = {SmsVerificationService.class})
+@RestClientTest(components = {SmsVerificationService.class, SmsVerificationUtil.class})
 public class SmsVerificationServiceTest {
 
 	@Autowired
@@ -39,11 +41,13 @@ public class SmsVerificationServiceTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Value("${ncp.request-url}")
+	private String requestUrl;
+
 	@Test
 	@DisplayName("인증번호 문자 발송에 성공한다.")
 	void sendSmsSuccess() throws JsonProcessingException {
 		// given
-		String requestUrl = SmsVerificationService.REQUEST_URL;
 		SmsApiResponse smsApiResponse = new SmsApiResponse("202", "success");
 		String smsApiResponseJsonStrBody = objectMapper.writeValueAsString(smsApiResponse);
 

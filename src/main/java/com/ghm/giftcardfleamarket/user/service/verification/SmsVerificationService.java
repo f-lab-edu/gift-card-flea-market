@@ -1,5 +1,6 @@
 package com.ghm.giftcardfleamarket.user.service.verification;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SmsVerificationService {
 
-	public static final String REQUEST_URL =
-		"https://sens.apigw.ntruss.com/sms/v2/services/ncp:sms:kr:306692833450:flea_market/messages";
-
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
 	private final SmsVerificationDao smsVerificationDao;
+
+	@Value("${ncp.request-url}")
+	private String requestUrl;
 
 	public void sendSms(String phone) throws JsonProcessingException {
 		String verificationCode = SmsVerificationUtil.makeVerificationCode();
@@ -36,7 +37,7 @@ public class SmsVerificationService {
 
 		String jsonStrBody = objectMapper.writeValueAsString(body);
 		HttpEntity<String> httpRequest = new HttpEntity<>(jsonStrBody, headers);
-		SmsApiResponse smsApiResponse = restTemplate.postForObject(REQUEST_URL, httpRequest, SmsApiResponse.class);
+		SmsApiResponse smsApiResponse = restTemplate.postForObject(requestUrl, httpRequest, SmsApiResponse.class);
 		if (smsApiResponse.getStatusName().equals("fail")) {
 			throw new SmsSendFailedException(smsApiResponse.getStatusCode());
 		}
