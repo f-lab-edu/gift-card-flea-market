@@ -30,8 +30,13 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(HttpStatus.valueOf(statusCode));
 	}
 
-	@ExceptionHandler({VerificationCodeMisMatchException.class, VerificationCodeTimeOutException.class})
-	public ResponseEntity<String> handleVerificationCodeException(RuntimeException e) {
+	@ExceptionHandler(VerificationCodeMisMatchException.class)
+	public ResponseEntity<String> handleVerificationCodeMisMatchException(VerificationCodeMisMatchException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(VerificationCodeTimeOutException.class)
+	public ResponseEntity<String> handleVerificationCodeTimeOutException(VerificationCodeTimeOutException e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
