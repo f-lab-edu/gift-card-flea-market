@@ -62,7 +62,7 @@ public class SmsVerificationUtil {
 			.build();
 	}
 
-	public static String makeSignature(String timestamp) {
+	private static String makeSignature(String timestamp) {
 		String space = " ";
 		String newLine = "\n";
 		String method = "POST";
