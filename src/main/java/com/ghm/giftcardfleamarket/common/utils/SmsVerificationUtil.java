@@ -11,18 +11,21 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
 import com.ghm.giftcardfleamarket.user.dto.request.MessageRequest;
 import com.ghm.giftcardfleamarket.user.dto.request.SmsApiRequest;
 
+@Component
 public class SmsVerificationUtil {
 
-	private static final String ACCESS_KEY = "iJPkzp82Zq6cU4XgmuQv";
-	private static final String SECRET_KEY = "Rtfhw7caZMJyOksfnRcVTH897dhi7ndAnbx62Oei";
-	private static final String SERVICE_ID = "ncp:sms:kr:306692833450:flea_market";
-	private static final String SENDER = "01024008614";
+	private static String accessKey;
+	private static String secretKey;
+	private static String serviceId;
+	private static String sender;
 
 	private SmsVerificationUtil() {
 	}
@@ -37,7 +40,7 @@ public class SmsVerificationUtil {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.add("x-ncp-apigw-timestamp", timestamp);
-		headers.add("x-ncp-iam-access-key", ACCESS_KEY);
+		headers.add("x-ncp-iam-access-key", accessKey);
 		headers.add("x-ncp-apigw-signature-v2", makeSignature(timestamp));
 		return headers;
 	}
@@ -53,17 +56,17 @@ public class SmsVerificationUtil {
 			.type("SMS")
 			.contentType("COMM")
 			.countryCode("82")
-			.from(SENDER)
+			.from(sender)
 			.content("기본 메시지")
 			.messages(messages)
 			.build();
 	}
 
-	public static String makeSignature(String timestamp) {
+	private static String makeSignature(String timestamp) {
 		String space = " ";
 		String newLine = "\n";
 		String method = "POST";
-		String url = "/sms/v2/services/" + SERVICE_ID + "/messages";
+		String url = "/sms/v2/services/" + serviceId + "/messages";
 
 		String message = new StringBuilder()
 			.append(method)
@@ -72,10 +75,10 @@ public class SmsVerificationUtil {
 			.append(newLine)
 			.append(timestamp)
 			.append(newLine)
-			.append(ACCESS_KEY)
+			.append(accessKey)
 			.toString();
 
-		SecretKeySpec signingKey = new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+		SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 
 		Mac mac = null;
 		try {
@@ -89,5 +92,25 @@ public class SmsVerificationUtil {
 		String encodeBase64String = Base64.encodeBase64String(rawHmac);
 
 		return encodeBase64String;
+	}
+
+	@Value("${ncp.access-key}")
+	private void setAccessKey(String value) {
+		accessKey = value;
+	}
+
+	@Value("${ncp.secret-key}")
+	private void setSecretKey(String value) {
+		secretKey = value;
+	}
+
+	@Value("${ncp.service-id}")
+	private void setServiceId(String value) {
+		serviceId = value;
+	}
+
+	@Value("${ncp.sender}")
+	private void setSender(String value) {
+		sender = value;
 	}
 }
