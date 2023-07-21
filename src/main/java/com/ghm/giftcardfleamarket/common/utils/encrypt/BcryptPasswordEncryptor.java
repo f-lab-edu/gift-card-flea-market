@@ -10,4 +10,9 @@ public class BcryptPasswordEncryptor implements PasswordEncryptor {
 	public String encrypt(String password) {
 		return BCrypt.hashpw(password, BCrypt.gensalt());
 	}
+
+	@Override
+	public boolean isMatch(String password, String hashedPassword) {
+		return BCrypt.checkpw(password, hashedPassword);
+	}
 }
