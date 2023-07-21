@@ -4,6 +4,12 @@
 
 <mapper namespace="com.ghm.giftcardfleamarket.user.mapper.UserMapper">
 
+    <resultMap id="userResultMap" type="User">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
     <insert id="saveUser" parameterType="User">
         INSERT INTO user (user_id, password, email, phone, created_at)
         VALUES (#{userId}, #{password}, #{email}, #{phone}, #{createdAt})
@@ -11,7 +17,12 @@
 
     <select id="hasUserId" parameterType="String" resultType="boolean">
         SELECT EXISTS
-        (SELECT id FROM users WHERE user_id = #{userId})
+        (SELECT id FROM user WHERE user_id = #{userId})
+    </select>
+
+    <select id="findUserByUserId" parameterType="String" resultMap="userResultMap">
+        SELECT id, user_id, password FROM user
+        WHERE user_id = #{userId}
     </select>
 
 </mapper>

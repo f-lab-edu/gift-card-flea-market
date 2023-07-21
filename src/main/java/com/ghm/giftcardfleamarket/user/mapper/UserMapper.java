@@ -10,4 +10,6 @@ public interface UserMapper {
 	void saveUser(User user);
 
 	boolean hasUserId(String userId);
+
+	User findUserByUserId(String userId);
 }

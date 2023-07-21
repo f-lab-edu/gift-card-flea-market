@@ -5,10 +5,13 @@ import org.springframework.stereotype.Service;
 
 import com.ghm.giftcardfleamarket.common.utils.encrypt.PasswordEncryptor;
 import com.ghm.giftcardfleamarket.user.domain.User;
+import com.ghm.giftcardfleamarket.user.dto.request.LoginRequest;
 import com.ghm.giftcardfleamarket.user.dto.request.SignUpRequest;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
+import com.ghm.giftcardfleamarket.user.exception.PasswordMisMatchException;
+import com.ghm.giftcardfleamarket.user.exception.UserIdNotFoundException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -43,5 +46,20 @@ public class UserService {
 		if (userMapper.hasUserId(userId)) {
 			throw new DuplicatedUserIdException("중복된 아이디입니다.");
 		}
+	}
+
+	public User findUser(LoginRequest loginRequest) {
+
+		User user = userMapper.findUserByUserId(loginRequest.getUserId());
+		if (user == null) {
+			throw new UserIdNotFoundException("등록되지 않은 아이디입니다.");
+		}
+
+		boolean isInvalidPassword = passwordEncryptor.isMatch(loginRequest.getPassword(), user.getPassword());
+		if (!isInvalidPassword) {
+			throw new PasswordMisMatchException("비밀번호가 일치하지 않습니다.");
+		}
+
+		return user;
 	}
 }
