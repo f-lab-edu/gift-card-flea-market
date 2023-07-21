@@ -2,19 +2,23 @@ package com.ghm.giftcardfleamarket.user.domain;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-	private final Long id;
-	private final String userId;
-	private final String password;
-	private final String email;
-	private final String phone;
-	private final boolean isActive;
-	private final LocalDateTime createdAt;
-	private final LocalDateTime updatedAt;
-	private final LocalDateTime deletedAt;
+	private Long id;
+	private String userId;
+	private String password;
+	private String email;
+	private String phone;
+	private boolean isActive;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+	private LocalDateTime deletedAt;
 }
