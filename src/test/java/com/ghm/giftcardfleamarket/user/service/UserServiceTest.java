@@ -1,6 +1,7 @@
 package com.ghm.giftcardfleamarket.user.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,10 +15,13 @@ import org.springframework.dao.DuplicateKeyException;
 
 import com.ghm.giftcardfleamarket.common.utils.encrypt.PasswordEncryptor;
 import com.ghm.giftcardfleamarket.user.domain.User;
+import com.ghm.giftcardfleamarket.user.dto.request.LoginRequest;
 import com.ghm.giftcardfleamarket.user.dto.request.SignUpRequest;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
+import com.ghm.giftcardfleamarket.user.exception.PasswordMisMatchException;
+import com.ghm.giftcardfleamarket.user.exception.UserIdNotFoundException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +38,10 @@ class UserServiceTest {
 
 	private SignUpRequest signUpRequest;
 
+	private LoginRequest loginRequest;
+
+	private User testUser;
+
 	@BeforeEach
 	void setUp() {
 		signUpRequest = SignUpRequest.builder()
@@ -42,10 +50,18 @@ class UserServiceTest {
 			.email("test@example.com")
 			.phone("01012345678")
 			.build();
+
+		loginRequest = new LoginRequest("testUserId", "testPassword");
+
+		testUser = User.builder()
+			.id(1L)
+			.userId("testUserId")
+			.password(passwordEncryptor.encrypt("testPassword"))
+			.build();
 	}
 
 	@Test
-	@DisplayName("회원가입 성공에 성공한다.")
+	@DisplayName("회원가입에 성공한다.")
 	void signUpSuccess() {
 		willDoNothing().given(userMapper).saveUser(any(User.class));
 
@@ -117,5 +133,47 @@ class UserServiceTest {
 			.isInstanceOf(DuplicatedUserIdException.class)
 			.hasMessageContaining("중복된 아이디입니다.");
 		then(userMapper).should().hasUserId(signUpRequest.getUserId());
+	}
+
+	@Test
+	@DisplayName("로그인에 성공한다.")
+	void loginSuccess() {
+		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(testUser);
+		given(passwordEncryptor.isMatch(loginRequest.getPassword(), testUser.getPassword())).willReturn(true);
+
+		User result = userService.findUser(loginRequest);
+
+		then(userMapper).should().findUserByUserId(loginRequest.getUserId());
+		then(passwordEncryptor).should().isMatch(loginRequest.getPassword(), testUser.getPassword());
+		assertEquals(result, testUser);
+	}
+
+	@Test
+	@DisplayName("등록되지 않은 아이디 기입으로 로그인에 실패한다.")
+	void loginWithUnRegisteredUserId() {
+		// given
+		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(null);
+
+		// when & then
+		assertThatThrownBy(() -> userService.findUser(loginRequest))
+			.isInstanceOf(UserIdNotFoundException.class)
+			.hasMessageContaining("등록되지 않은 아이디입니다.");
+		then(userMapper).should().findUserByUserId(loginRequest.getUserId());
+		then(passwordEncryptor).should(never()).isMatch(anyString(), anyString());
+	}
+
+	@Test
+	@DisplayName("비밀번호 오기입으로 로그인에 실패한다.")
+	void loginWithInvalidPassword() {
+		// given
+		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(testUser);
+		given(passwordEncryptor.isMatch(loginRequest.getPassword(), testUser.getPassword())).willReturn(false);
+
+		// when & then
+		assertThatThrownBy(() -> userService.findUser(loginRequest))
+			.isInstanceOf(PasswordMisMatchException.class)
+			.hasMessageContaining("비밀번호가 일치하지 않습니다.");
+		then(userMapper).should().findUserByUserId(loginRequest.getUserId());
+		then(passwordEncryptor).should().isMatch(loginRequest.getPassword(), testUser.getPassword());
 	}
 }
