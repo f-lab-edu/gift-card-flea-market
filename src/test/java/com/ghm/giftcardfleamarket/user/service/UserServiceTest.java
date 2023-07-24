@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -138,7 +140,7 @@ class UserServiceTest {
 	@Test
 	@DisplayName("로그인에 성공한다.")
 	void loginSuccess() {
-		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(testUser);
+		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(Optional.ofNullable(testUser));
 		given(passwordEncryptor.isMatch(loginRequest.getPassword(), testUser.getPassword())).willReturn(true);
 
 		User result = userService.findUser(loginRequest);
@@ -152,7 +154,7 @@ class UserServiceTest {
 	@DisplayName("등록되지 않은 아이디 기입으로 로그인에 실패한다.")
 	void loginWithUnRegisteredUserId() {
 		// given
-		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(null);
+		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(Optional.empty());
 
 		// when & then
 		assertThatThrownBy(() -> userService.findUser(loginRequest))
@@ -166,7 +168,7 @@ class UserServiceTest {
 	@DisplayName("비밀번호 오기입으로 로그인에 실패한다.")
 	void loginWithInvalidPassword() {
 		// given
-		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(testUser);
+		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(Optional.ofNullable(testUser));
 		given(passwordEncryptor.isMatch(loginRequest.getPassword(), testUser.getPassword())).willReturn(false);
 
 		// when & then

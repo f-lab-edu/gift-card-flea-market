@@ -1,5 +1,7 @@
 package com.ghm.giftcardfleamarket.user.mapper;
 
+import java.util.Optional;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ghm.giftcardfleamarket.user.domain.User;
@@ -11,5 +13,5 @@ public interface UserMapper {
 
 	boolean hasUserId(String userId);
 
-	User findUserByUserId(String userId);
+	Optional<User> findUserByUserId(String userId);
 }
