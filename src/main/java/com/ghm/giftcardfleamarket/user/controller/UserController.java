@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ghm.giftcardfleamarket.user.domain.User;
+import com.ghm.giftcardfleamarket.user.dto.request.LoginRequest;
 import com.ghm.giftcardfleamarket.user.dto.request.SignUpRequest;
 import com.ghm.giftcardfleamarket.user.dto.request.SmsVerificationRequest;
+import com.ghm.giftcardfleamarket.user.service.LoginService;
 import com.ghm.giftcardfleamarket.user.service.UserService;
 import com.ghm.giftcardfleamarket.user.service.verification.SmsVerificationService;
 
@@ -25,6 +28,7 @@ public class UserController {
 
 	private final UserService userService;
 	private final SmsVerificationService smsVerificationService;
+	private final LoginService loginService;
 
 	@PostMapping
 	public ResponseEntity<String> signUp(@RequestBody @Validated SignUpRequest signUpRequest) {
@@ -49,6 +53,19 @@ public class UserController {
 	@PostMapping("/sms-verification/verify")
 	public ResponseEntity<String> verify(@RequestBody @Validated SmsVerificationRequest smsRequest) {
 		smsVerificationService.verifyVerificationCode(smsRequest);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody @Validated LoginRequest loginRequest) {
+		User user = userService.findUser(loginRequest);
+		loginService.login(user.getId());
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/logout")
+	public ResponseEntity<String> logout() {
+		loginService.logout();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

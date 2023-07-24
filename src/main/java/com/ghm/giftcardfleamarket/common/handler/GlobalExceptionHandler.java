@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
+import com.ghm.giftcardfleamarket.user.exception.PasswordMisMatchException;
+import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
+import com.ghm.giftcardfleamarket.user.exception.UserIdNotFoundException;
 import com.ghm.giftcardfleamarket.user.exception.verification.SmsSendFailedException;
 import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeMisMatchException;
 import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeTimeOutException;
@@ -38,5 +41,20 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(VerificationCodeTimeOutException.class)
 	public ResponseEntity<String> handleVerificationCodeTimeOutException(VerificationCodeTimeOutException e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UserIdNotFoundException.class)
+	public ResponseEntity<String> handleUserIdNotFoundException(UserIdNotFoundException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(PasswordMisMatchException.class)
+	public ResponseEntity<String> handlePasswordMisMatchException(PasswordMisMatchException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UnauthorizedUserException.class)
+	public ResponseEntity<String> handleUnauthorizedUserException(UnauthorizedUserException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
 	}
 }
