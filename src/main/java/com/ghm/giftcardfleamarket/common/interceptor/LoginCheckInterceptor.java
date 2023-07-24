@@ -20,7 +20,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		log.info("로그인 체크 인터셉터 실행");
+		log.debug("로그인 체크 인터셉터 실행");
 
 		if (loginService.getLoginUser() == null) {
 			throw new UnauthorizedUserException("로그인 후 이용 가능합니다.");
