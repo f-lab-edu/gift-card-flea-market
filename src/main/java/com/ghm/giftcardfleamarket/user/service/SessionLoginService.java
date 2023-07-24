@@ -1,5 +1,7 @@
 package com.ghm.giftcardfleamarket.user.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.ghm.giftcardfleamarket.common.utils.constants.SessionNames;
@@ -24,7 +26,7 @@ public class SessionLoginService implements LoginService {
 	}
 
 	@Override
-	public Long getLoginUser() {
-		return (Long)session.getAttribute(SessionNames.LOGIN_USER);
+	public Optional<Long> getLoginUser() {
+		return Optional.ofNullable((Long)session.getAttribute(SessionNames.LOGIN_USER));
 	}
 }

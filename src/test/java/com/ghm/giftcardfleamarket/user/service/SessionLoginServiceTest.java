@@ -3,6 +3,8 @@ package com.ghm.giftcardfleamarket.user.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,9 +70,9 @@ class SessionLoginServiceTest {
 	void getLoginUserSuccess() {
 		given(mockSession.getAttribute(SessionNames.LOGIN_USER)).willReturn(testUser.getId());
 
-		Long result = sessionLoginService.getLoginUser();
+		Optional<Long> result = sessionLoginService.getLoginUser();
 
 		then(mockSession).should().getAttribute(SessionNames.LOGIN_USER);
-		assertEquals(result, testUser.getId());
+		assertEquals(result.orElse(0L), testUser.getId());
 	}
 }
