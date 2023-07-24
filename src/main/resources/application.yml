@@ -18,4 +18,4 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.ghm.giftcardfleamarket.user.domain
+  type-aliases-package: com.ghm.giftcardfleamarket.*.domain
