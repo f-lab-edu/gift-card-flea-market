@@ -22,7 +22,7 @@ public class BrandController {
 
 	@GetMapping("/{categoryId}")
 	public ResponseEntity<List<String>> getBrandNames(@PathVariable Long categoryId) {
-		List<String> brandList = brandService.getBrandNames(categoryId);
+		List<String> brandList = brandService.getBrandNamesByCategory(categoryId);
 		return new ResponseEntity<>(brandList, HttpStatus.OK);
 	}
 }

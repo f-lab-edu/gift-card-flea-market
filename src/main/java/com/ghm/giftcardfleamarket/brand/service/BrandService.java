@@ -14,7 +14,7 @@ public class BrandService {
 
 	private final BrandMapper brandMapper;
 
-	public List<String> getBrandNames(Long categoryId) {
-		return brandMapper.selectBrandNames(categoryId);
+	public List<String> getBrandNamesByCategory(Long categoryId) {
+		return brandMapper.selectBrandNamesByCategory(categoryId);
 	}
 }

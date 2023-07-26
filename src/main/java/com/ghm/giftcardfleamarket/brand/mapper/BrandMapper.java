@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface BrandMapper {
 
-	List<String> selectBrandNames(Long categoryId);
+	List<String> selectBrandNamesByCategory(Long categoryId);
 }
