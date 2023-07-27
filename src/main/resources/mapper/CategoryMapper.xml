@@ -6,7 +6,7 @@
 
     <select id="selectCategoryNames" resultType="String">
         SELECT name FROM category
-        ORDER BY id
+        ORDER BY id DESC
     </select>
 
 </mapper>

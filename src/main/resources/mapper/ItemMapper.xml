@@ -12,7 +12,7 @@
     <select id="selectItemsByBrand" parameterType="Long" resultMap="itemResultMap">
         SELECT name, price FROM item
         WHERE brand_id = #{brandId}
-        ORDER BY id
+        ORDER BY id DESC
     </select>
 
 </mapper>
