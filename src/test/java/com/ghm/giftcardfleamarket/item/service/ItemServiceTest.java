@@ -35,7 +35,6 @@ class ItemServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		//itemList = new ArrayList<>();
 		itemList = Arrays.asList(
 			new Item("카페아메리카노", 4500),
 			new Item("카페라떼", 5000),
