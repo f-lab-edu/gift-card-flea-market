@@ -9,10 +9,16 @@
         <result property="price" column="price"/>
     </resultMap>
 
-    <select id="selectItemsByBrand" parameterType="Long" resultMap="itemResultMap">
+    <select id="selectItemsByBrand" parameterType="map" resultMap="itemResultMap">
         SELECT name, price FROM item
         WHERE brand_id = #{brandId}
         ORDER BY id ASC
+        LIMIT #{dataCountPerPage} OFFSET #{offset}
+    </select>
+
+    <select id="itemTotalCount" parameterType="Long" resultType="int">
+        SELECT count(*) FROM item
+        WHERE brand_id = #{brandId}
     </select>
 
 </mapper>

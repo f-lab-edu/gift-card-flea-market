@@ -8,6 +8,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ItemListResponse {
-	private int size;
+	private int totalCount;
 	private List<ItemResponse> itemResponseList;
 }
