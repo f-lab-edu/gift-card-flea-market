@@ -13,7 +13,7 @@
         SELECT name, price FROM item
         WHERE brand_id = #{brandId}
         ORDER BY id ASC
-        LIMIT #{dataCountPerPage} OFFSET #{offset}
+        LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
     <select id="itemTotalCount" parameterType="Long" resultType="int">

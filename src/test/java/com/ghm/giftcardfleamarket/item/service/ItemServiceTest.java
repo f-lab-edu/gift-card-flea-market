@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 
-import com.ghm.giftcardfleamarket.common.utils.PagingUtil;
+import com.ghm.giftcardfleamarket.common.utils.constants.Pagination;
 import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
@@ -41,10 +41,10 @@ class ItemServiceTest {
 	@BeforeEach
 	void setUp() {
 
-		brandIdAndPageInfo = new HashMap<>();
-		brandIdAndPageInfo.put("brandId", 1L);
-		brandIdAndPageInfo.put("dataCountPerPage", PagingUtil.dataCountPerPage);
-		brandIdAndPageInfo.put("offset", PagingUtil.getOffset(1));
+		brandIdAndPageInfo = Map.ofEntries(
+			Map.entry("brandId", 1L),
+			Map.entry("pageSize", Pagination.PAGE_SIZE),
+			Map.entry("offset", PageRequest.of(1, Pagination.PAGE_SIZE).getOffset()));
 
 		itemList = Arrays.asList(
 			new Item("카페아메리카노", 4500),
