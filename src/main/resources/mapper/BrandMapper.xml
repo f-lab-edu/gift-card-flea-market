@@ -7,7 +7,7 @@
     <select id="selectBrandNamesByCategory" parameterType="Long" resultType="String">
         SELECT name FROM brand
         WHERE category_id = #{categoryId}
-        ORDER BY id DESC
+        ORDER BY id ASC
     </select>
 
 </mapper>
