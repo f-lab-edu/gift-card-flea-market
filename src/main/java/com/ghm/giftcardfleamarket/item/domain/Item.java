@@ -1,6 +1,6 @@
 package com.ghm.giftcardfleamarket.item.domain;
 
-import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
 import java.time.LocalDateTime;
 
@@ -28,7 +28,7 @@ public class Item {
 		return ItemResponse.builder()
 			.name(name)
 			.price(price)
-			.discountPrice(calculatePrice(price, DISCOUNT_RATE))
+			.discountPrice(calculatePrice(price, DISCOUNT_RATE.getRate()))
 			.build();
 	}
 }

@@ -1,6 +1,6 @@
 package com.ghm.giftcardfleamarket.item.service;
 
-import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -56,25 +56,25 @@ class ItemServiceTest {
 			ItemResponse.builder()
 				.name("카페아메리카노")
 				.price(4500)
-				.discountPrice(calculatePrice(4500, DISCOUNT_RATE))
+				.discountPrice(calculatePrice(4500, DISCOUNT_RATE.getRate()))
 				.build(),
 
 			ItemResponse.builder()
 				.name("카페라떼")
 				.price(5000)
-				.discountPrice(calculatePrice(5000, DISCOUNT_RATE))
+				.discountPrice(calculatePrice(5000, DISCOUNT_RATE.getRate()))
 				.build(),
 
 			ItemResponse.builder()
 				.name("콜드브루")
 				.price(4900)
-				.discountPrice(calculatePrice(4900, DISCOUNT_RATE))
+				.discountPrice(calculatePrice(4900, DISCOUNT_RATE.getRate()))
 				.build(),
 
 			ItemResponse.builder()
 				.name("자바칩 프라푸치노")
 				.price(6300)
-				.discountPrice(calculatePrice(6300, DISCOUNT_RATE))
+				.discountPrice(calculatePrice(6300, DISCOUNT_RATE.getRate()))
 				.build());
 	}
 
