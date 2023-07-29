@@ -5,9 +5,9 @@ public enum PriceRate {
 	HIGH_DISCOUNT_RATE(15),
 	PROPOSAL_RATE(20);
 
-	private final int rate;
+	private final double rate;
 
-	PriceRate(int rate) {
+	PriceRate(double rate) {
 		this.rate = rate;
 	}
 
@@ -16,7 +16,7 @@ public enum PriceRate {
 		return removeLastDigit(calculatedPrice);
 	}
 
-	public int getRate() {
+	public double getRate() {
 		return rate;
 	}
 
