@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
 
-import com.ghm.giftcardfleamarket.common.utils.encrypt.PasswordEncryptor;
+import com.ghm.giftcardfleamarket.common.utils.PasswordEncryptor;
 import com.ghm.giftcardfleamarket.user.domain.User;
 import com.ghm.giftcardfleamarket.user.dto.request.LoginRequest;
 import com.ghm.giftcardfleamarket.user.dto.request.SignUpRequest;
