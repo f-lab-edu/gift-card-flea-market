@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BrandMapper {
 
 	List<String> selectBrandNamesByCategory(Long categoryId);
+
+	String selectBrandName(Long brandId);
 }

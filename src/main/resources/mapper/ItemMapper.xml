@@ -7,6 +7,7 @@
     <resultMap id="itemResultMap" type="Item">
         <result property="name" column="name"/>
         <result property="price" column="price"/>
+        <result property="brandId" column="brand_id"/>
     </resultMap>
 
     <select id="selectItemsByBrand" parameterType="map" resultMap="itemResultMap">
@@ -19,6 +20,11 @@
     <select id="itemTotalCount" parameterType="Long" resultType="int">
         SELECT count(*) FROM item
         WHERE brand_id = #{brandId}
+    </select>
+
+    <select id="selectItemDetails" parameterType="Long" resultMap="itemResultMap">
+        SELECT name, price, brand_id FROM item
+        WHERE id = #{itemId}
     </select>
 
 </mapper>

@@ -8,8 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.common.utils.constants.Pagination;
 import com.ghm.giftcardfleamarket.item.domain.Item;
+import com.ghm.giftcardfleamarket.item.dto.response.ItemDetailResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
 
 	private final ItemMapper itemMapper;
+	private final BrandMapper brandMapper;
 
 	public ItemListResponse getItemsByBrand(Long brandId, int page) {
 		List<ItemResponse> itemResponseList = new ArrayList<>();
@@ -29,6 +32,13 @@ public class ItemService {
 		itemList.forEach(item -> itemResponseList.add(item.toDto()));
 
 		return new ItemListResponse(itemMapper.itemTotalCount(brandId), itemResponseList);
+	}
+
+	public ItemDetailResponse getItemDetails(Long itemId) {
+		Item item = itemMapper.selectItemDetails(itemId);
+		String brandName = brandMapper.selectBrandName(item.getBrandId());
+
+		return ItemDetailResponse.of(item, brandName);
 	}
 
 	private Map<String, Object> putBrandIdAndPageInfoToMap(Long brandId, int page) {
