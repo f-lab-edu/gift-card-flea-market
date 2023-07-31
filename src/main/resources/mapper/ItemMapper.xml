@@ -4,14 +4,9 @@
 
 <mapper namespace="com.ghm.giftcardfleamarket.item.mapper.ItemMapper">
 
-    <resultMap id="itemResultMap" type="Item">
-        <result property="name" column="name"/>
-        <result property="price" column="price"/>
-    </resultMap>
-
-    <select id="selectItemsByBrand" parameterType="map" resultMap="itemResultMap">
+    <select id="selectItemsByBrand" parameterType="map" resultType="Item">
         SELECT name, price FROM item
-        WHERE brand_id = #{brandId}
+        WHERE brand_id = #{id}
         ORDER BY id ASC
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
