@@ -1,5 +1,6 @@
 package com.ghm.giftcardfleamarket.item.service;
 
+import static com.ghm.giftcardfleamarket.common.utils.constants.Pagination.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -17,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
-import com.ghm.giftcardfleamarket.common.utils.constants.Pagination;
 import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
@@ -42,9 +42,9 @@ class ItemServiceTest {
 	void setUp() {
 
 		brandIdAndPageInfo = Map.ofEntries(
-			Map.entry("brandId", 1L),
-			Map.entry("pageSize", Pagination.PAGE_SIZE),
-			Map.entry("offset", PageRequest.of(1, Pagination.PAGE_SIZE).getOffset()));
+			Map.entry("id", 1L),
+			Map.entry("pageSize", ITEM_PAGE_SIZE.getPageSize()),
+			Map.entry("offset", PageRequest.of(0, ITEM_PAGE_SIZE.getPageSize()).getOffset()));
 
 		itemList = Arrays.asList(
 			new Item("카페아메리카노", 4500),
@@ -83,7 +83,7 @@ class ItemServiceTest {
 	void getItemsByBrandSuccess() {
 		given(itemMapper.selectItemsByBrand(brandIdAndPageInfo)).willReturn(itemList);
 
-		ItemListResponse result = itemService.getItemsByBrand(1L, 1);
+		ItemListResponse result = itemService.getItemsByBrand(1L, 0);
 
 		then(itemMapper).should().selectItemsByBrand(brandIdAndPageInfo);
 		assertEquals(result.getItemResponseList().get(0).getDiscountPrice(),
