@@ -35,11 +35,11 @@ class CategoryServiceTest {
 	@Test
 	@DisplayName("카테고리 목록을 조회하는데 성공한다.")
 	void getCategoryNamesSuccess() {
-		given(categoryMapper.selectCategoryNames()).willReturn(categoryNames);
+		given(categoryMapper.selectAllCategoryName()).willReturn(categoryNames);
 
-		List<String> result = categoryService.getCategoryNames();
+		List<String> result = categoryService.getAllCategoryName();
 
-		then(categoryMapper).should().selectCategoryNames();
+		then(categoryMapper).should().selectAllCategoryName();
 		assertEquals(result, categoryNames);
 	}
 }

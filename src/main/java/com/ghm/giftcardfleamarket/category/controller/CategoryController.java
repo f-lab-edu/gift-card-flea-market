@@ -20,8 +20,8 @@ public class CategoryController {
 	private final CategoryService categoryService;
 
 	@GetMapping
-	public ResponseEntity<List<String>> getCategoryNames() {
-		List<String> categoryList = categoryService.getCategoryNames();
+	public ResponseEntity<List<String>> getAllCategoryName() {
+		List<String> categoryList = categoryService.getAllCategoryName();
 		return new ResponseEntity<>(categoryList, HttpStatus.OK);
 	}
 }

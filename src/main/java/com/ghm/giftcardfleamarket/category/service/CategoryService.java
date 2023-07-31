@@ -14,7 +14,7 @@ public class CategoryService {
 
 	private final CategoryMapper categoryMapper;
 
-	public List<String> getCategoryNames() {
-		return categoryMapper.selectCategoryNames();
+	public List<String> getAllCategoryName() {
+		return categoryMapper.selectAllCategoryName();
 	}
 }
