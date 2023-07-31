@@ -4,10 +4,11 @@
 
 <mapper namespace="com.ghm.giftcardfleamarket.brand.mapper.BrandMapper">
 
-    <select id="selectBrandNamesByCategory" parameterType="Long" resultType="String">
+    <select id="selectBrandsByCategory" parameterType="map" resultType="Brand">
         SELECT name FROM brand
-        WHERE category_id = #{categoryId}
+        WHERE category_id = #{id}
         ORDER BY id ASC
+        LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
 </mapper>
