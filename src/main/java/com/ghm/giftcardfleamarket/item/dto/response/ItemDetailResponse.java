@@ -1,5 +1,6 @@
 package com.ghm.giftcardfleamarket.item.dto.response;
 
+import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
 import com.ghm.giftcardfleamarket.item.domain.Item;
