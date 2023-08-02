@@ -11,16 +11,7 @@ public enum PriceRate {
 		this.rate = rate;
 	}
 
-	public static int calculatePrice(int price, double rate) {
-		int calculatedPrice = price - (int)(price * rate / 100);
-		return removeLastDigit(calculatedPrice);
-	}
-
 	public double getRate() {
 		return rate;
-	}
-
-	private static int removeLastDigit(int price) {
-		return price / 10 * 10;
 	}
 }
