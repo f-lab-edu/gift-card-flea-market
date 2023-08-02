@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ghm.giftcardfleamarket.brand.mapper.BrandMapper">
+
+    <resultMap id="brandResultMap" type="Brand">
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="selectBrandsByCategory" parameterType="map" resultMap="brandResultMap">
+        SELECT name, created_at, updated_at FROM brand
+        WHERE category_id = #{id}
+        ORDER BY id ASC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+</mapper>

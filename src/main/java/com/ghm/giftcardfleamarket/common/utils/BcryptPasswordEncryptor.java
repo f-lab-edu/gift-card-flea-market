@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.common.utils.encrypt;
+package com.ghm.giftcardfleamarket.common.utils;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;
