@@ -8,7 +8,7 @@
         <result property="brandId" column="brand_id"/>
     </resultMap>
 
-    <select id="selectItemsByBrand" parameterType="map" resultMap="Item">
+    <select id="selectItemsByBrand" parameterType="map" resultType="Item">
         SELECT name, price FROM item
         WHERE brand_id = #{id}
         ORDER BY id ASC
