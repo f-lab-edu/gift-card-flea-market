@@ -1,7 +1,7 @@
 package com.ghm.giftcardfleamarket.brand.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
 
 import java.util.ArrayList;
 import java.util.List;
