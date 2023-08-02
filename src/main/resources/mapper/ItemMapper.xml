@@ -4,7 +4,11 @@
 
 <mapper namespace="com.ghm.giftcardfleamarket.item.mapper.ItemMapper">
 
-    <select id="selectItemsByBrand" parameterType="map" resultType="Item">
+    <resultMap id="itemResultMap" type="Item">
+        <result property="brandId" column="brand_id"/>
+    </resultMap>
+
+    <select id="selectItemsByBrand" parameterType="map" resultMap="Item">
         SELECT name, price FROM item
         WHERE brand_id = #{id}
         ORDER BY id ASC
@@ -14,6 +18,11 @@
     <select id="itemTotalCount" parameterType="Long" resultType="int">
         SELECT count(*) FROM item
         WHERE brand_id = #{brandId}
+    </select>
+
+    <select id="selectItemDetails" parameterType="Long" resultMap="itemResultMap">
+        SELECT name, price, brand_id FROM item
+        WHERE id = #{itemId}
     </select>
 
 </mapper>
