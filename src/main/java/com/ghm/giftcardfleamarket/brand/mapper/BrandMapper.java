@@ -11,4 +11,6 @@ import com.ghm.giftcardfleamarket.brand.domain.Brand;
 public interface BrandMapper {
 
 	List<Brand> selectBrandsByCategory(Map<String, Object> map);
+
+	String selectBrandNameByCategory(Long brandId);
 }

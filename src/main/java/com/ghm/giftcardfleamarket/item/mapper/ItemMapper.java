@@ -12,5 +12,7 @@ public interface ItemMapper {
 
 	List<Item> selectItemsByBrand(Map<String, Object> brandIdAndPageInfo);
 
-	int itemTotalCount(Long brandId);
+	int selectItemTotalCountByBrand(Long brandId);
+
+	Item selectItemDetails(Long itemId);
 }

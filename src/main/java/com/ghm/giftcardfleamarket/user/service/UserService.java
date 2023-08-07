@@ -30,7 +30,7 @@ public class UserService {
 		User newUser = signUpRequest.toEntity(digest);
 
 		try {
-			userMapper.saveUser(newUser);
+			userMapper.insertUser(newUser);
 		} catch (DuplicateKeyException e) {
 			if (e.getMessage().contains(newUser.getUserId())) {
 				throw new DuplicatedUserIdException("중복된 아이디입니다.");
@@ -51,7 +51,7 @@ public class UserService {
 	}
 
 	public User findUser(LoginRequest loginRequest) {
-		Optional<User> optionalUser = userMapper.findUserByUserId(loginRequest.getUserId());
+		Optional<User> optionalUser = userMapper.selectUserByUserId(loginRequest.getUserId());
 		optionalUser.orElseThrow(() -> new UserIdNotFoundException("등록되지 않은 아이디입니다."));
 
 		boolean isInvalidPassword = passwordEncryptor.isMatch(loginRequest.getPassword(),

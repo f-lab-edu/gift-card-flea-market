@@ -65,11 +65,11 @@ class UserServiceTest {
 	@Test
 	@DisplayName("회원가입에 성공한다.")
 	void signUpSuccess() {
-		willDoNothing().given(userMapper).saveUser(any(User.class));
+		willDoNothing().given(userMapper).insertUser(any(User.class));
 
 		userService.signUp(signUpRequest);
 
-		then(userMapper).should().saveUser(any(User.class));
+		then(userMapper).should().insertUser(any(User.class));
 	}
 
 	@Test
@@ -77,13 +77,13 @@ class UserServiceTest {
 	void signUpWithDuplicatedUserId() {
 		// given
 		DuplicateKeyException exception = new DuplicateKeyException(signUpRequest.getUserId());
-		willThrow(exception).given(userMapper).saveUser(any(User.class));
+		willThrow(exception).given(userMapper).insertUser(any(User.class));
 
 		// when & then
 		assertThatThrownBy(() -> userService.signUp(signUpRequest))
 			.isInstanceOf(DuplicatedUserIdException.class)
 			.hasMessageContaining("중복된 아이디입니다.");
-		then(userMapper).should().saveUser(any(User.class));
+		then(userMapper).should().insertUser(any(User.class));
 	}
 
 	@Test
@@ -91,13 +91,13 @@ class UserServiceTest {
 	void signUpWithDuplicatedEmail() {
 		// given
 		DuplicateKeyException exception = new DuplicateKeyException(signUpRequest.getEmail());
-		willThrow(exception).given(userMapper).saveUser(any(User.class));
+		willThrow(exception).given(userMapper).insertUser(any(User.class));
 
 		// when & then
 		assertThatThrownBy(() -> userService.signUp(signUpRequest))
 			.isInstanceOf(DuplicatedEmailException.class)
 			.hasMessageContaining("중복된 이메일입니다.");
-		then(userMapper).should().saveUser(any(User.class));
+		then(userMapper).should().insertUser(any(User.class));
 	}
 
 	@Test
@@ -105,13 +105,13 @@ class UserServiceTest {
 	void signUpWitDuplicatedPhone() {
 		// given
 		DuplicateKeyException exception = new DuplicateKeyException(signUpRequest.getPhone());
-		willThrow(exception).given(userMapper).saveUser(any(User.class));
+		willThrow(exception).given(userMapper).insertUser(any(User.class));
 
 		// when & then
 		assertThatThrownBy(() -> userService.signUp(signUpRequest))
 			.isInstanceOf(DuplicatedPhoneException.class)
 			.hasMessageContaining("중복된 휴대폰 번호입니다.");
-		then(userMapper).should().saveUser(any(User.class));
+		then(userMapper).should().insertUser(any(User.class));
 	}
 
 	@Test
@@ -140,12 +140,12 @@ class UserServiceTest {
 	@Test
 	@DisplayName("로그인에 성공한다.")
 	void loginSuccess() {
-		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(Optional.ofNullable(testUser));
+		given(userMapper.selectUserByUserId(loginRequest.getUserId())).willReturn(Optional.ofNullable(testUser));
 		given(passwordEncryptor.isMatch(loginRequest.getPassword(), testUser.getPassword())).willReturn(true);
 
 		User result = userService.findUser(loginRequest);
 
-		then(userMapper).should().findUserByUserId(loginRequest.getUserId());
+		then(userMapper).should().selectUserByUserId(loginRequest.getUserId());
 		then(passwordEncryptor).should().isMatch(loginRequest.getPassword(), testUser.getPassword());
 		assertEquals(result, testUser);
 	}
@@ -154,13 +154,13 @@ class UserServiceTest {
 	@DisplayName("등록되지 않은 아이디 기입으로 로그인에 실패한다.")
 	void loginWithUnRegisteredUserId() {
 		// given
-		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(Optional.empty());
+		given(userMapper.selectUserByUserId(loginRequest.getUserId())).willReturn(Optional.empty());
 
 		// when & then
 		assertThatThrownBy(() -> userService.findUser(loginRequest))
 			.isInstanceOf(UserIdNotFoundException.class)
 			.hasMessageContaining("등록되지 않은 아이디입니다.");
-		then(userMapper).should().findUserByUserId(loginRequest.getUserId());
+		then(userMapper).should().selectUserByUserId(loginRequest.getUserId());
 		then(passwordEncryptor).should(never()).isMatch(anyString(), anyString());
 	}
 
@@ -168,14 +168,14 @@ class UserServiceTest {
 	@DisplayName("비밀번호 오기입으로 로그인에 실패한다.")
 	void loginWithInvalidPassword() {
 		// given
-		given(userMapper.findUserByUserId(loginRequest.getUserId())).willReturn(Optional.ofNullable(testUser));
+		given(userMapper.selectUserByUserId(loginRequest.getUserId())).willReturn(Optional.ofNullable(testUser));
 		given(passwordEncryptor.isMatch(loginRequest.getPassword(), testUser.getPassword())).willReturn(false);
 
 		// when & then
 		assertThatThrownBy(() -> userService.findUser(loginRequest))
 			.isInstanceOf(PasswordMisMatchException.class)
 			.hasMessageContaining("비밀번호가 일치하지 않습니다.");
-		then(userMapper).should().findUserByUserId(loginRequest.getUserId());
+		then(userMapper).should().selectUserByUserId(loginRequest.getUserId());
 		then(passwordEncryptor).should().isMatch(loginRequest.getPassword(), testUser.getPassword());
 	}
 }

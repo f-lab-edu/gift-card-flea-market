@@ -1,7 +1,7 @@
 package com.ghm.giftcardfleamarket.item.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
