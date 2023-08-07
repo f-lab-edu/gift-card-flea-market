@@ -16,7 +16,7 @@
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
-    <select id="selectBrandName" parameterType="Long" resultType="String">
+    <select id="selectBrandNameByCategory" parameterType="Long" resultType="String">
         SELECT name FROM brand
         WHERE id = #{brandId}
     </select>

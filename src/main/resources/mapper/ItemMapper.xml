@@ -15,7 +15,7 @@
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
-    <select id="itemTotalCount" parameterType="Long" resultType="int">
+    <select id="selectItemTotalCountByBrand" parameterType="Long" resultType="int">
         SELECT count(*) FROM item
         WHERE brand_id = #{brandId}
     </select>

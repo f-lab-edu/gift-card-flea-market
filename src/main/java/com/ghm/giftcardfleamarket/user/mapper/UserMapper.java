@@ -9,9 +9,9 @@ import com.ghm.giftcardfleamarket.user.domain.User;
 @Mapper
 public interface UserMapper {
 
-	void saveUser(User user);
+	void insertUser(User user);
 
 	boolean hasUserId(String userId);
 
-	Optional<User> findUserByUserId(String userId);
+	Optional<User> selectUserByUserId(String userId);
 }

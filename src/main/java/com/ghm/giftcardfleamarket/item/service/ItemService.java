@@ -32,12 +32,12 @@ public class ItemService {
 		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdAndPageInfo);
 		itemList.forEach(item -> itemResponseList.add(ItemResponse.of(item)));
 
-		return new ItemListResponse(itemMapper.itemTotalCount(brandId), itemResponseList);
+		return new ItemListResponse(itemMapper.selectItemTotalCountByBrand(brandId), itemResponseList);
 	}
 
 	public ItemDetailResponse getItemDetails(Long itemId) {
 		Item item = itemMapper.selectItemDetails(itemId);
-		String brandName = brandMapper.selectBrandName(item.getBrandId());
+		String brandName = brandMapper.selectBrandNameByCategory(item.getBrandId());
 
 		return ItemDetailResponse.of(item, brandName);
 	}
