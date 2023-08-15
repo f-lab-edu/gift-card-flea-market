@@ -37,7 +37,7 @@ public class ItemService {
 
 	public ItemDetailResponse getItemDetails(Long itemId) {
 		Item item = itemMapper.selectItemDetails(itemId);
-		String brandName = brandMapper.selectBrandNameByCategory(item.getBrandId());
+		String brandName = brandMapper.selectBrandNameByBrandId(item.getBrandId());
 
 		return ItemDetailResponse.of(item, brandName);
 	}
