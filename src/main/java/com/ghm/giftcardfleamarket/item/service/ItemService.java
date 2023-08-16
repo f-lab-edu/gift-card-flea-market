@@ -1,7 +1,9 @@
 package com.ghm.giftcardfleamarket.item.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
+import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import com.ghm.giftcardfleamarket.item.dto.response.ItemDetailResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
+import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,5 +43,19 @@ public class ItemService {
 		String brandName = brandMapper.selectBrandNameByBrandId(item.getBrandId());
 
 		return ItemDetailResponse.of(item, brandName);
+	}
+
+	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
+		Map<String, Object> brandIdMap = Map.of("id", brandId);
+		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdMap);
+
+		return SaleOptionResponse.ofItemList(itemList);
+	}
+
+	public SaleOptionResponse getItemProposalPrice(Long itemId) {
+		int itemPrice = itemMapper.selectItemPrice(itemId);
+		int itemProposalPrice = calculatePrice(itemPrice, PROPOSAL_RATE.getRate());
+
+		return new SaleOptionResponse(itemProposalPrice);
 	}
 }

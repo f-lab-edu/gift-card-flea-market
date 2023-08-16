@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
 import com.ghm.giftcardfleamarket.brand.dto.BrandResponse;
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
+import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,5 +31,12 @@ public class BrandService {
 		brandList.forEach(brand -> brandResponseList.add(BrandResponse.of(brand)));
 
 		return brandResponseList;
+	}
+
+	public SaleOptionResponse getBrandNamesByCategory(Long categoryId) {
+		Map<String, Object> categoryIdMap = Map.of("id", categoryId);
+		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdMap);
+
+		return SaleOptionResponse.ofBrandList(brandList);
 	}
 }

@@ -13,7 +13,9 @@
         SELECT name, created_at, updated_at FROM brand
         WHERE category_id = #{id}
         ORDER BY id ASC
-        LIMIT #{pageSize} OFFSET #{offset}
+        <if test="pageSize != null and offset != null">
+            LIMIT #{pageSize} OFFSET #{offset}
+        </if>
     </select>
 
     <select id="selectBrandNameByBrandId" parameterType="Long" resultType="String">
