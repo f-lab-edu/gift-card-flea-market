@@ -10,9 +10,9 @@ import com.ghm.giftcardfleamarket.sale.domain.Sale;
 @Mapper
 public interface SaleMapper {
 
-	void insertSaleGiftCard(Sale sale);
+	void insertGiftCard(Sale sale);
 
 	boolean hasBarcode(String barcode);
 
-	List<Sale> selectSaleGiftCard(Map<String, Object> userIdAndPageInfo);
+	List<Sale> selectMySoldGiftCards(Map<String, Object> userIdAndPageInfo);
 }

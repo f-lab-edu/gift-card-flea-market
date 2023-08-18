@@ -10,7 +10,7 @@
         <result property="registeredAt" column="registered_at"/>
     </resultMap>
 
-    <insert id="insertSaleGiftCard" parameterType="Sale">
+    <insert id="insertGiftCard" parameterType="Sale">
         INSERT INTO sale(seller_id, item_id, barcode, expiration_date, registered_at)
         VALUES (#{sellerId}, #{itemId}, #{barcode}, #{expirationDate}, #{registeredAt})
     </insert>
@@ -20,7 +20,7 @@
         (SELECT barcode FROM sale WHERE barcode = #{barcode})
     </select>
 
-    <select id="selectSaleGiftCard" parameterType="map" resultMap="saleResultMap">
+    <select id="selectMySoldGiftCards" parameterType="map" resultMap="saleResultMap">
         SELECT item_id, barcode, expiration_date, registered_at FROM sale
         WHERE seller_id = #{userId}
         LIMIT #{pageSize} OFFSET #{offset}

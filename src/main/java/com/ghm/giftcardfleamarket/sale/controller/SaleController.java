@@ -55,15 +55,15 @@ public class SaleController {
 	}
 
 	@PostMapping("/{itemId}")
-	public ResponseEntity<Void> saleGiftCard(@PathVariable Long itemId,
+	public ResponseEntity<Void> sellGiftCard(@PathVariable Long itemId,
 		@RequestBody @Validated SaleRequest saleRequest) {
 		saleRequest.setItemId(itemId);
-		saleService.saleGiftCard(saleRequest);
+		saleService.sellGiftCard(saleRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@GetMapping
-	public ResponseEntity<SaleListResponse> getSaleGiftCards(@RequestParam(defaultValue = "0") int page) {
-		return new ResponseEntity<>(saleService.getSaleGiftCards(page), HttpStatus.OK);
+	public ResponseEntity<SaleListResponse> getMySoldGiftCards(@RequestParam(defaultValue = "0") int page) {
+		return new ResponseEntity<>(saleService.getMySoldGiftCards(page), HttpStatus.OK);
 	}
 }

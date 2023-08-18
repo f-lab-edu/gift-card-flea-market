@@ -34,20 +34,20 @@ public class SaleService {
 	private final ItemMapper itemMapper;
 	private final LoginService loginService;
 
-	public void saleGiftCard(SaleRequest saleRequest) {
+	public void sellGiftCard(SaleRequest saleRequest) {
 		if (saleMapper.hasBarcode(saleRequest.getBarcode())) {
 			throw new DuplicatedBarcodeException("이미 등록된 바코드입니다.");
 		}
-		saleMapper.insertSaleGiftCard(saleRequest.toEntity(findLoginUserIdInSession()));
+		saleMapper.insertGiftCard(saleRequest.toEntity(findLoginUserIdInSession()));
 	}
 
-	public SaleListResponse getSaleGiftCards(int page) {
+	public SaleListResponse getMySoldGiftCards(int page) {
 		List<SaleResponse> saleResponseList = new ArrayList<>();
 
 		Map<String, Object> userIdAndPageInfo = putUserIdAndPageInfoToMap(findLoginUserIdInSession(), page,
 			SALE_PAGE_SIZE.getPageSize());
 
-		List<Sale> saleList = saleMapper.selectSaleGiftCard(userIdAndPageInfo);
+		List<Sale> saleList = saleMapper.selectMySoldGiftCards(userIdAndPageInfo);
 		saleList.forEach(sale -> {
 			Item item = itemMapper.selectItemDetails(sale.getItemId());
 			saleResponseList.add(
