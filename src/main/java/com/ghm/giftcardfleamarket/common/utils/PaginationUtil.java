@@ -14,4 +14,12 @@ public class PaginationUtil {
 			Map.entry("pageSize", pageSize),
 			Map.entry("offset", pageable.getOffset()));
 	}
+
+	public static Map<String, Object> putUserIdAndPageInfoToMap(String userId, int page, int pageSize) {
+		Pageable pageable = PageRequest.of(page, pageSize);
+		return Map.ofEntries(
+			Map.entry("userId", userId),
+			Map.entry("pageSize", pageSize),
+			Map.entry("offset", pageable.getOffset()));
+	}
 }
