@@ -16,6 +16,7 @@ import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.sale.domain.Sale;
 import com.ghm.giftcardfleamarket.sale.dto.request.SaleRequest;
+import com.ghm.giftcardfleamarket.sale.dto.response.SaleListResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleResponse;
 import com.ghm.giftcardfleamarket.sale.exception.DuplicatedBarcodeException;
 import com.ghm.giftcardfleamarket.sale.mapper.SaleMapper;
@@ -40,7 +41,7 @@ public class SaleService {
 		saleMapper.insertSaleGiftCard(saleRequest.toEntity(findLoginUserIdInSession()));
 	}
 
-	public List<SaleResponse> getSaleGiftCards(int page) {
+	public SaleListResponse getSaleGiftCards(int page) {
 		List<SaleResponse> saleResponseList = new ArrayList<>();
 
 		Map<String, Object> userIdAndPageInfo = putUserIdAndPageInfoToMap(findLoginUserIdInSession(), page,
@@ -53,7 +54,7 @@ public class SaleService {
 				SaleResponse.of(sale, item.getName(), calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate())));
 		});
 
-		return saleResponseList;
+		return new SaleListResponse(saleResponseList);
 	}
 
 	private String findLoginUserIdInSession() {

@@ -17,8 +17,8 @@ import com.ghm.giftcardfleamarket.brand.service.BrandService;
 import com.ghm.giftcardfleamarket.category.service.CategoryService;
 import com.ghm.giftcardfleamarket.item.service.ItemService;
 import com.ghm.giftcardfleamarket.sale.dto.request.SaleRequest;
+import com.ghm.giftcardfleamarket.sale.dto.response.SaleListResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
-import com.ghm.giftcardfleamarket.sale.dto.response.SaleResponse;
 import com.ghm.giftcardfleamarket.sale.service.SaleService;
 
 import lombok.RequiredArgsConstructor;
@@ -63,7 +63,7 @@ public class SaleController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<SaleResponse>> getSaleGiftCards(@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<SaleListResponse> getSaleGiftCards(@RequestParam(defaultValue = "0") int page) {
 		return new ResponseEntity<>(saleService.getSaleGiftCards(page), HttpStatus.OK);
 	}
 }
