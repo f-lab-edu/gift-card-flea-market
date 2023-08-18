@@ -4,6 +4,12 @@
 
 <mapper namespace="com.ghm.giftcardfleamarket.sale.mapper.SaleMapper">
 
+    <resultMap id="saleResultMap" type="Sale">
+        <result property="itemId" column="item_id"/>
+        <result property="expirationDate" column="expiration_date"/>
+        <result property="registeredAt" column="registered_at"/>
+    </resultMap>
+
     <insert id="insertSaleGiftCard" parameterType="Sale">
         INSERT INTO sale(seller_id, item_id, barcode, expiration_date, registered_at)
         VALUES (#{sellerId}, #{itemId}, #{barcode}, #{expirationDate}, #{registeredAt})
@@ -12,6 +18,12 @@
     <select id="hasBarcode" parameterType="String" resultType="boolean">
         SELECT EXISTS
         (SELECT barcode FROM sale WHERE barcode = #{barcode})
+    </select>
+
+    <select id="selectSaleGiftCard" parameterType="map" resultMap="saleResultMap">
+        SELECT item_id, barcode, expiration_date, registered_at FROM sale
+        WHERE seller_id = #{userId}
+        LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
 </mapper>

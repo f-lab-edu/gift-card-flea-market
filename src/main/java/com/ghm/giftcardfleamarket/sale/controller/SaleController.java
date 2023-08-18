@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ghm.giftcardfleamarket.brand.service.BrandService;
@@ -17,6 +18,7 @@ import com.ghm.giftcardfleamarket.category.service.CategoryService;
 import com.ghm.giftcardfleamarket.item.service.ItemService;
 import com.ghm.giftcardfleamarket.sale.dto.request.SaleRequest;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
+import com.ghm.giftcardfleamarket.sale.dto.response.SaleResponse;
 import com.ghm.giftcardfleamarket.sale.service.SaleService;
 
 import lombok.RequiredArgsConstructor;
@@ -58,5 +60,10 @@ public class SaleController {
 		saleRequest.setItemId(itemId);
 		saleService.saleGiftCard(saleRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<SaleResponse>> getSaleGiftCards(@RequestParam(defaultValue = "0") int page) {
+		return new ResponseEntity<>(saleService.getSaleGiftCards(page), HttpStatus.OK);
 	}
 }
