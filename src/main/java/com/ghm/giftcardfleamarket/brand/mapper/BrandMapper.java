@@ -12,5 +12,5 @@ public interface BrandMapper {
 
 	List<Brand> selectBrandsByCategory(Map<String, Object> map);
 
-	String selectBrandNameByBrandId(Long brandId);
+	String selectBrandName(Long brandId);
 }
