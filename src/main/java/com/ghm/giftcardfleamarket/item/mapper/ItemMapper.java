@@ -16,5 +16,5 @@ public interface ItemMapper {
 
 	Item selectItemDetails(Long itemId);
 
-	int selectItemPrice(Long itemId);
+	Integer selectItemPrice(Long itemId);
 }

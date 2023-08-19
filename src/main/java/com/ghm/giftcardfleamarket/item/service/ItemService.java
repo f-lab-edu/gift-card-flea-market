@@ -53,9 +53,7 @@ public class ItemService {
 	}
 
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
-		int itemPrice = itemMapper.selectItemPrice(itemId);
-		int itemProposalPrice = calculatePrice(itemPrice, PROPOSAL_RATE.getRate());
-
-		return new SaleOptionResponse(itemProposalPrice);
+		Integer itemPrice = itemMapper.selectItemPrice(itemId);
+		return itemPrice == null ? null : new SaleOptionResponse(calculatePrice(itemPrice, PROPOSAL_RATE.getRate()));
 	}
 }
