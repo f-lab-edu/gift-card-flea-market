@@ -20,9 +20,9 @@ public class SaleOptionResponse {
 	private List<String> categoryName;
 	private List<String> brandName;
 	private List<String> itemName;
-	private int proposalPrice;
+	private Integer proposalPrice;
 
-	public SaleOptionResponse(int proposalPrice) {
+	public SaleOptionResponse(Integer proposalPrice) {
 		this.proposalPrice = proposalPrice;
 	}
 
