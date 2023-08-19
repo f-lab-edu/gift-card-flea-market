@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SaleOptionResponse {
 
-	List<String> categoryName;
-	List<String> brandName;
-	List<String> itemName;
-	int proposalPrice;
+	private List<String> categoryName;
+	private List<String> brandName;
+	private List<String> itemName;
+	private int proposalPrice;
 
 	public SaleOptionResponse(int proposalPrice) {
 		this.proposalPrice = proposalPrice;
