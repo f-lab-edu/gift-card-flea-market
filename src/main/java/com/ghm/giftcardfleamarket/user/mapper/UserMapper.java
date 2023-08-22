@@ -14,4 +14,6 @@ public interface UserMapper {
 	boolean hasUserId(String userId);
 
 	Optional<User> selectUserByUserId(String userId);
+
+	String selectUserIdById(Long id);
 }

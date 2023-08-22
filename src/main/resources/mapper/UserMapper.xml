@@ -23,4 +23,9 @@
         WHERE user_id = #{userId}
     </select>
 
+    <select id="selectUserIdById" parameterType="Long" resultType="String">
+        SELECT user_id FROM user
+        WHERE id = #{id}
+    </select>
+
 </mapper>

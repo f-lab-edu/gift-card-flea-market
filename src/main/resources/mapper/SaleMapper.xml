@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ghm.giftcardfleamarket.sale.mapper.SaleMapper">
+
+    <insert id="insertSaleGiftCard" parameterType="Sale">
+        INSERT INTO sale(seller_id, item_id, barcode, expiration_date, registered_at)
+        VALUES (#{sellerId}, #{itemId}, #{barcode}, #{expirationDate}, #{registeredAt})
+    </insert>
+
+    <select id="hasBarcode" parameterType="String" resultType="boolean">
+        SELECT EXISTS
+        (SELECT barcode FROM sale WHERE barcode = #{barcode})
+    </select>
+
+</mapper>
