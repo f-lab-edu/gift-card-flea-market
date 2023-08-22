@@ -20,6 +20,7 @@ import com.ghm.giftcardfleamarket.sale.dto.response.SaleListResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleResponse;
 import com.ghm.giftcardfleamarket.sale.exception.DuplicatedBarcodeException;
 import com.ghm.giftcardfleamarket.sale.mapper.SaleMapper;
+import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 import com.ghm.giftcardfleamarket.user.service.LoginService;
 
@@ -59,6 +60,8 @@ public class SaleService {
 
 	private String findLoginUserIdInSession() {
 		Optional<Long> loginUser = loginService.getLoginUser();
+		loginUser.orElseThrow(() -> new UnauthorizedUserException("로그인 후 이용 가능합니다."));
+
 		return userMapper.selectUserIdById(loginUser.get());
 	}
 }
