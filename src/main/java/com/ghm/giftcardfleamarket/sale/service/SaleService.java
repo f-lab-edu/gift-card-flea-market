@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.ghm.giftcardfleamarket.sale.dto.request.SaleRequest;
 import com.ghm.giftcardfleamarket.sale.exception.DuplicatedBarcodeException;
 import com.ghm.giftcardfleamarket.sale.mapper.SaleMapper;
+import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 import com.ghm.giftcardfleamarket.user.service.LoginService;
 
@@ -26,8 +27,9 @@ public class SaleService {
 		}
 
 		Optional<Long> loginUser = loginService.getLoginUser();
-		String loginUserId = userMapper.selectUserIdById(loginUser.get());
+		loginUser.orElseThrow(() -> new UnauthorizedUserException("로그인 후 이용 가능합니다."));
 
+		String loginUserId = userMapper.selectUserIdById(loginUser.get());
 		saleMapper.insertSaleGiftCard(saleRequest.toEntity(loginUserId));
 	}
 }
