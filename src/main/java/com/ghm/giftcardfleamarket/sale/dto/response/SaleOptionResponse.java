@@ -1,6 +1,5 @@
 package com.ghm.giftcardfleamarket.sale.dto.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
@@ -17,9 +16,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SaleOptionResponse {
 
-	private List<String> categoryName;
-	private List<String> brandName;
-	private List<String> itemName;
+	private List<String> categoryNames;
+	private List<String> brandNames;
+	private List<String> itemNames;
 	private Integer proposalPrice;
 
 	public SaleOptionResponse(Integer proposalPrice) {
@@ -27,29 +26,28 @@ public class SaleOptionResponse {
 	}
 
 	public static SaleOptionResponse ofCategoryList(List<String> list) {
-		SaleOptionResponse saleOptionResponse = SaleOptionResponse.builder()
-			.categoryName(new ArrayList<>())
+		return SaleOptionResponse.builder()
+			.categoryNames(list)
 			.build();
-
-		list.forEach(categoryName -> saleOptionResponse.getCategoryName().add(categoryName));
-		return saleOptionResponse;
 	}
 
 	public static SaleOptionResponse ofBrandList(List<Brand> list) {
-		SaleOptionResponse saleOptionResponse = SaleOptionResponse.builder()
-			.brandName(new ArrayList<>())
-			.build();
+		List<String> brandNames = list.stream()
+			.map(Brand::getName)
+			.toList();
 
-		list.forEach(brand -> saleOptionResponse.getBrandName().add(brand.getName()));
-		return saleOptionResponse;
+		return SaleOptionResponse.builder()
+			.brandNames(brandNames)
+			.build();
 	}
 
 	public static SaleOptionResponse ofItemList(List<Item> list) {
-		SaleOptionResponse saleOptionResponse = SaleOptionResponse.builder()
-			.itemName(new ArrayList<>())
-			.build();
+		List<String> itemNames = list.stream()
+			.map(Item::getName)
+			.toList();
 
-		list.forEach(item -> saleOptionResponse.getItemName().add(item.getName()));
-		return saleOptionResponse;
+		return SaleOptionResponse.builder()
+			.itemNames(itemNames)
+			.build();
 	}
 }

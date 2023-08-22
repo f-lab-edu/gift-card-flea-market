@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ghm.giftcardfleamarket.sale.exception.DuplicatedBarcodeException;
+import com.ghm.giftcardfleamarket.sale.exception.SaleOptionListNotFoundException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
 import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
@@ -62,5 +63,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(DuplicatedBarcodeException.class)
 	public ResponseEntity<String> handleDuplicatedBarcodeException(DuplicatedBarcodeException e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(SaleOptionListNotFoundException.class)
+	public ResponseEntity<String> handleSaleOptionListNotFoundException(SaleOptionListNotFoundException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 }

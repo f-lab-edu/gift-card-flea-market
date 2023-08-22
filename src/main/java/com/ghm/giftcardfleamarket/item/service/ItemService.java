@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.item.domain.Item;
@@ -18,6 +19,7 @@ import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
+import com.ghm.giftcardfleamarket.sale.exception.SaleOptionListNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +50,10 @@ public class ItemService {
 	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
 		Map<String, Object> brandIdMap = Map.of("id", brandId);
 		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdMap);
+
+		if (CollectionUtils.isEmpty(itemList)) {
+			throw new SaleOptionListNotFoundException("아이템 목록을 찾을 수 없습니다.");
+		}
 
 		return SaleOptionResponse.ofItemList(itemList);
 	}

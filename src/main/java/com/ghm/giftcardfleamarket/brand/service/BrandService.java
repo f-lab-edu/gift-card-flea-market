@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
 import com.ghm.giftcardfleamarket.brand.dto.BrandResponse;
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
+import com.ghm.giftcardfleamarket.sale.exception.SaleOptionListNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +38,10 @@ public class BrandService {
 	public SaleOptionResponse getBrandNamesByCategory(Long categoryId) {
 		Map<String, Object> categoryIdMap = Map.of("id", categoryId);
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdMap);
+
+		if (CollectionUtils.isEmpty(brandList)) {
+			throw new SaleOptionListNotFoundException("브랜드 목록을 찾을 수 없습니다.");
+		}
 
 		return SaleOptionResponse.ofBrandList(brandList);
 	}
