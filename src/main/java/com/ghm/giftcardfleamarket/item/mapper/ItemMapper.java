@@ -15,6 +15,4 @@ public interface ItemMapper {
 	int selectItemTotalCountByBrand(Long brandId);
 
 	Item selectItemDetails(Long itemId);
-
-	Integer selectItemPrice(Long itemId);
 }

@@ -27,9 +27,4 @@
         WHERE id = #{itemId}
     </select>
 
-    <select id="selectItemPrice" parameterType="Long" resultType="int">
-        SELECT price FROM item
-        WHERE id = #{itemId}
-    </select>
-
 </mapper>
