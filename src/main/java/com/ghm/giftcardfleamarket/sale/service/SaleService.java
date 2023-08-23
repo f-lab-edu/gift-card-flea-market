@@ -5,12 +5,12 @@ import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
@@ -43,17 +43,20 @@ public class SaleService {
 	}
 
 	public SaleListResponse getMySoldGiftCards(int page) {
-		List<SaleResponse> saleResponseList = new ArrayList<>();
-
 		Map<String, Object> userIdAndPageInfo = putUserIdAndPageInfoToMap(findLoginUserIdInSession(), page,
 			SALE_PAGE_SIZE.getPageSize());
-
 		List<Sale> saleList = saleMapper.selectMySoldGiftCards(userIdAndPageInfo);
-		saleList.forEach(sale -> {
-			Item item = itemMapper.selectItemDetails(sale.getItemId());
-			saleResponseList.add(
-				SaleResponse.of(sale, item.getName(), calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate())));
-		});
+
+		if (CollectionUtils.isEmpty(saleList)) {
+			return null;
+		}
+
+		List<SaleResponse> saleResponseList = saleList.stream()
+			.map(sale -> {
+				Item item = itemMapper.selectItemDetails(sale.getItemId());
+				return SaleResponse.of(sale, item.getName(), calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate()));
+			})
+			.toList();
 
 		return new SaleListResponse(saleResponseList);
 	}
