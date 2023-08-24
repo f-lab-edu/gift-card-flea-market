@@ -7,7 +7,6 @@ import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -62,9 +61,8 @@ public class SaleService {
 	}
 
 	private String findLoginUserIdInSession() {
-		Optional<Long> loginUser = loginService.getLoginUser();
-		loginUser.orElseThrow(() -> new UnauthorizedUserException("로그인 후 이용 가능합니다."));
-
-		return userMapper.selectUserIdById(loginUser.get());
+		return loginService.getLoginUser()
+			.map(userMapper::selectUserIdById)
+			.orElseThrow(() -> new UnauthorizedUserException("로그인 후 이용 가능합니다."));
 	}
 }
