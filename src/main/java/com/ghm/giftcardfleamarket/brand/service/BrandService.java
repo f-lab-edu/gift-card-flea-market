@@ -27,7 +27,7 @@ public class BrandService {
 	public List<BrandResponse> getBrandsByCategory(Long categoryId, int page) {
 		ArrayList<BrandResponse> brandResponseList = new ArrayList<>();
 
-		Map<String, Object> categoryIdAndPageInfo = putIdAndPageInfoToMap(categoryId, page,
+		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page,
 			BRAND_PAGE_SIZE.getPageSize());
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdAndPageInfo);
 		brandList.forEach(brand -> brandResponseList.add(BrandResponse.of(brand)));

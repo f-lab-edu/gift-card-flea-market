@@ -33,7 +33,8 @@ public class ItemService {
 	public ItemListResponse getItemsByBrand(Long brandId, int page) {
 		List<ItemResponse> itemResponseList = new ArrayList<>();
 
-		Map<String, Object> brandIdAndPageInfo = putIdAndPageInfoToMap(brandId, page, ITEM_PAGE_SIZE.getPageSize());
+		Map<String, Object> brandIdAndPageInfo = makePagingQueryParamsWithMap(brandId, page,
+			ITEM_PAGE_SIZE.getPageSize());
 		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdAndPageInfo);
 		itemList.forEach(item -> itemResponseList.add(ItemResponse.of(item)));
 

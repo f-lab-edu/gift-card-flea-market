@@ -42,7 +42,7 @@ public class SaleService {
 	}
 
 	public SaleListResponse getMySoldGiftCards(int page) {
-		Map<String, Object> userIdAndPageInfo = putUserIdAndPageInfoToMap(findLoginUserIdInSession(), page,
+		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
 			SALE_PAGE_SIZE.getPageSize());
 		List<Sale> saleList = saleMapper.selectMySoldGiftCards(userIdAndPageInfo);
 

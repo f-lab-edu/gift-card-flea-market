@@ -7,19 +7,19 @@ import org.springframework.data.domain.Pageable;
 
 public class PaginationUtil {
 
-	public static Map<String, Object> putIdAndPageInfoToMap(Long id, int page, int pageSize) {
+	public static Map<String, Object> makePagingQueryParamsWithMap(Object obj, int page, int pageSize) {
 		Pageable pageable = PageRequest.of(page, pageSize);
 		return Map.ofEntries(
-			Map.entry("id", id),
+			Map.entry(determineMapKeyByType(obj), obj),
 			Map.entry("pageSize", pageSize),
 			Map.entry("offset", pageable.getOffset()));
 	}
 
-	public static Map<String, Object> putUserIdAndPageInfoToMap(String userId, int page, int pageSize) {
-		Pageable pageable = PageRequest.of(page, pageSize);
-		return Map.ofEntries(
-			Map.entry("userId", userId),
-			Map.entry("pageSize", pageSize),
-			Map.entry("offset", pageable.getOffset()));
+	private static String determineMapKeyByType(Object obj) {
+		return switch (obj.getClass().getSimpleName()) {
+			case "Long" -> "id";
+			case "String" -> "userId";
+			default -> "Object";
+		};
 	}
 }
