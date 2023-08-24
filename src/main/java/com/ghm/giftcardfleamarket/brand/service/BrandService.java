@@ -36,8 +36,8 @@ public class BrandService {
 	}
 
 	public SaleOptionResponse getBrandNamesByCategory(Long categoryId) {
-		Map<String, Object> categoryIdMap = Map.of("id", categoryId);
-		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdMap);
+		Map<String, Object> idToCategoryId = Map.of("id", categoryId);
+		List<Brand> brandList = brandMapper.selectBrandsByCategory(idToCategoryId);
 
 		if (CollectionUtils.isEmpty(brandList)) {
 			throw new SaleOptionListNotFoundException("브랜드 목록을 찾을 수 없습니다.");

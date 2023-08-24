@@ -49,8 +49,8 @@ public class ItemService {
 	}
 
 	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
-		Map<String, Object> brandIdMap = Map.of("id", brandId);
-		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdMap);
+		Map<String, Object> idToBrandId = Map.of("id", brandId);
+		List<Item> itemList = itemMapper.selectItemsByBrand(idToBrandId);
 
 		if (CollectionUtils.isEmpty(itemList)) {
 			throw new SaleOptionListNotFoundException("아이템 목록을 찾을 수 없습니다.");
