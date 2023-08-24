@@ -48,7 +48,7 @@ public class SaleService {
 		List<Sale> saleList = saleMapper.selectMySoldGiftCards(userIdAndPageInfo);
 
 		if (CollectionUtils.isEmpty(saleList)) {
-			return null;
+			return SaleListResponse.empty();
 		}
 
 		List<SaleResponse> saleResponseList = saleList.stream()

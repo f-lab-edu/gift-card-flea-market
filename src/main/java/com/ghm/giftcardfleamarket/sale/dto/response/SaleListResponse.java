@@ -9,4 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SaleListResponse {
 	private List<SaleResponse> saleResponseList;
+
+	public static SaleListResponse empty() {
+		return null;
+	}
 }
