@@ -5,6 +5,8 @@ import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +15,15 @@ import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
+import com.ghm.giftcardfleamarket.sale.domain.Inventory;
 import com.ghm.giftcardfleamarket.sale.domain.Sale;
 import com.ghm.giftcardfleamarket.sale.dto.request.SaleRequest;
+import com.ghm.giftcardfleamarket.sale.dto.response.InventoryListResponse;
+import com.ghm.giftcardfleamarket.sale.dto.response.InventoryResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleListResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleResponse;
 import com.ghm.giftcardfleamarket.sale.exception.DuplicatedBarcodeException;
+import com.ghm.giftcardfleamarket.sale.exception.GiftCardInventoryNotFoundException;
 import com.ghm.giftcardfleamarket.sale.mapper.SaleMapper;
 import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
@@ -58,6 +64,32 @@ public class SaleService {
 			.toList();
 
 		return new SaleListResponse(saleResponseList);
+	}
+
+	public InventoryListResponse getGiftCardInventoriesByExpirationDate(Long itemId) {
+		LocalDate currentDate = LocalDate.now();
+		int price = itemMapper.selectItemDetails(itemId).getPrice();
+
+		List<Inventory> inventoryList = saleMapper.selectGiftCardInventoriesByExpirationDate(itemId);
+
+		if (CollectionUtils.isEmpty(inventoryList)) {
+			throw new GiftCardInventoryNotFoundException("찾는 상품의 기프티콘 재고가 없습니다.");
+		}
+
+		List<InventoryResponse> inventoryResponseList = inventoryList.stream()
+			.map(inventory -> {
+				LocalDate expirationDate = inventory.getExpirationDate();
+				long daysBetween = currentDate.until(expirationDate, ChronoUnit.DAYS);
+
+				int salePrice = (daysBetween >= 0 && daysBetween <= 7) ?
+					calculatePrice(price, HIGH_DISCOUNT_RATE.getRate()) :
+					calculatePrice(price, DISCOUNT_RATE.getRate());
+
+				return InventoryResponse.of(inventory, salePrice);
+			})
+			.toList();
+
+		return new InventoryListResponse(inventoryResponseList);
 	}
 
 	private String findLoginUserIdInSession() {

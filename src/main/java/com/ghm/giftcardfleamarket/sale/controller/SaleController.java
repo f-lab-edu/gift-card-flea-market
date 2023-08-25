@@ -17,6 +17,7 @@ import com.ghm.giftcardfleamarket.brand.service.BrandService;
 import com.ghm.giftcardfleamarket.category.service.CategoryService;
 import com.ghm.giftcardfleamarket.item.service.ItemService;
 import com.ghm.giftcardfleamarket.sale.dto.request.SaleRequest;
+import com.ghm.giftcardfleamarket.sale.dto.response.InventoryListResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleListResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
 import com.ghm.giftcardfleamarket.sale.service.SaleService;
@@ -65,5 +66,10 @@ public class SaleController {
 	@GetMapping
 	public ResponseEntity<SaleListResponse> getMySoldGiftCards(@RequestParam(defaultValue = "0") int page) {
 		return new ResponseEntity<>(saleService.getMySoldGiftCards(page), HttpStatus.OK);
+	}
+
+	@GetMapping("/{itemId}")
+	public ResponseEntity<InventoryListResponse> getGiftCardInventories(@PathVariable Long itemId) {
+		return new ResponseEntity<>(saleService.getGiftCardInventoriesByExpirationDate(itemId), HttpStatus.OK);
 	}
 }
