@@ -16,10 +16,13 @@ public class PaginationUtil {
 	}
 
 	private static String determineMapKeyByType(Object obj) {
-		return switch (obj.getClass().getSimpleName()) {
-			case "Long" -> "id";
-			case "String" -> "userId";
-			default -> "Object";
-		};
+		if (obj instanceof Long) {
+			return "id";
+		}
+		if (obj instanceof String) {
+			return "userId";
+		}
+
+		throw new IllegalArgumentException("지원하지 않는 타입입니다 : " + obj.getClass().getName());
 	}
 }
