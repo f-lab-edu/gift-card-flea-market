@@ -27,7 +27,7 @@ public class BrandService {
 	public List<BrandResponse> getBrandsByCategory(Long categoryId, int page) {
 		ArrayList<BrandResponse> brandResponseList = new ArrayList<>();
 
-		Map<String, Object> categoryIdAndPageInfo = putIdAndPageInfoToMap(categoryId, page,
+		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page,
 			BRAND_PAGE_SIZE.getPageSize());
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdAndPageInfo);
 		brandList.forEach(brand -> brandResponseList.add(BrandResponse.of(brand)));
@@ -36,8 +36,8 @@ public class BrandService {
 	}
 
 	public SaleOptionResponse getBrandNamesByCategory(Long categoryId) {
-		Map<String, Object> categoryIdMap = Map.of("id", categoryId);
-		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdMap);
+		Map<String, Object> idToCategoryId = Map.of("id", categoryId);
+		List<Brand> brandList = brandMapper.selectBrandsByCategory(idToCategoryId);
 
 		if (CollectionUtils.isEmpty(brandList)) {
 			throw new SaleOptionListNotFoundException("브랜드 목록을 찾을 수 없습니다.");

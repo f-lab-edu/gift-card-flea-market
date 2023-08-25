@@ -10,7 +10,7 @@ import com.ghm.giftcardfleamarket.item.domain.Item;
 @Mapper
 public interface ItemMapper {
 
-	List<Item> selectItemsByBrand(Map<String, Object> brandIdAndPageInfo);
+	List<Item> selectItemsByBrand(Map<String, Object> map);
 
 	int selectItemTotalCountByBrand(Long brandId);
 

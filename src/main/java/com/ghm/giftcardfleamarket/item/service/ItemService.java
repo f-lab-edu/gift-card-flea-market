@@ -33,7 +33,8 @@ public class ItemService {
 	public ItemListResponse getItemsByBrand(Long brandId, int page) {
 		List<ItemResponse> itemResponseList = new ArrayList<>();
 
-		Map<String, Object> brandIdAndPageInfo = putIdAndPageInfoToMap(brandId, page, ITEM_PAGE_SIZE.getPageSize());
+		Map<String, Object> brandIdAndPageInfo = makePagingQueryParamsWithMap(brandId, page,
+			ITEM_PAGE_SIZE.getPageSize());
 		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdAndPageInfo);
 		itemList.forEach(item -> itemResponseList.add(ItemResponse.of(item)));
 
@@ -48,8 +49,8 @@ public class ItemService {
 	}
 
 	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
-		Map<String, Object> brandIdMap = Map.of("id", brandId);
-		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdMap);
+		Map<String, Object> idToBrandId = Map.of("id", brandId);
+		List<Item> itemList = itemMapper.selectItemsByBrand(idToBrandId);
 
 		if (CollectionUtils.isEmpty(itemList)) {
 			throw new SaleOptionListNotFoundException("아이템 목록을 찾을 수 없습니다.");
