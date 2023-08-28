@@ -62,7 +62,7 @@ public class SaleService {
 		List<SaleResponse> saleResponseList = saleList.stream()
 			.map(sale -> {
 				Item item = itemMapper.selectItemDetails(sale.getItemId())
-					.orElseThrow(() -> new ItemNotFoundException(sale.getItemId() + "에 해당하는 상품이 없습니다."));
+					.orElseThrow(() -> new ItemNotFoundException(sale.getItemId()));
 				return SaleResponse.of(sale, item.getName(), calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate()));
 			})
 			.toList();
@@ -74,7 +74,7 @@ public class SaleService {
 		LocalDate currentDate = LocalDate.now();
 
 		Item item = itemMapper.selectItemDetails(itemId)
-			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
+			.orElseThrow(() -> new ItemNotFoundException(itemId));
 
 		String brandName = brandMapper.selectBrandName(item.getBrandId());
 		List<Inventory> inventoryList = saleMapper.selectGiftCardInventoriesByExpirationDate(itemId);

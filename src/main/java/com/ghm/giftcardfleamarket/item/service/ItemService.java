@@ -50,7 +50,7 @@ public class ItemService {
 				String brandName = brandMapper.selectBrandName(item.getBrandId());
 				return ItemDetailResponse.of(item, brandName);
 			})
-			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
+			.orElseThrow(() -> new ItemNotFoundException(itemId));
 	}
 
 	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
@@ -67,6 +67,6 @@ public class ItemService {
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
 		return itemMapper.selectItemDetails(itemId)
 			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate())))
-			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
+			.orElseThrow(() -> new ItemNotFoundException(itemId));
 	}
 }
