@@ -24,8 +24,7 @@ public class ItemController {
 	@GetMapping("/{brandId}")
 	public ResponseEntity<ItemListResponse> getItems(@PathVariable Long brandId,
 		@RequestParam(defaultValue = "0") int page) {
-		ItemListResponse itemListResponse = itemService.getItemsByBrand(brandId, page);
-		return new ResponseEntity<>(itemListResponse, HttpStatus.OK);
+		return new ResponseEntity<>(itemService.getItemsByBrand(brandId, page), HttpStatus.OK);
 	}
 
 	@GetMapping("/details/{itemId}")
