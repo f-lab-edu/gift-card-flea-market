@@ -5,7 +5,6 @@ import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,14 +31,17 @@ public class ItemService {
 	private final BrandMapper brandMapper;
 
 	public ItemListResponse getItemsByBrand(Long brandId, int page) {
-		List<ItemResponse> itemResponseList = new ArrayList<>();
+		int itemTotalCount = itemMapper.selectItemTotalCountByBrand(brandId);
 
 		Map<String, Object> brandIdAndPageInfo = makePagingQueryParamsWithMap(brandId, page,
 			ITEM_PAGE_SIZE.getPageSize());
 		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdAndPageInfo);
-		itemList.forEach(item -> itemResponseList.add(ItemResponse.of(item)));
 
-		return new ItemListResponse(itemMapper.selectItemTotalCountByBrand(brandId), itemResponseList);
+		List<ItemResponse> itemResponseList = itemList.stream()
+			.map(ItemResponse::of)
+			.toList();
+
+		return new ItemListResponse(itemTotalCount, itemResponseList);
 	}
 
 	public ItemDetailResponse getItemDetails(Long itemId) {
