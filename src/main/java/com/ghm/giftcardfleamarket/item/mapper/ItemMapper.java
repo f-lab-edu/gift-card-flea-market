@@ -2,6 +2,7 @@ package com.ghm.giftcardfleamarket.item.mapper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,5 +15,5 @@ public interface ItemMapper {
 
 	int selectItemTotalCountByBrand(Long brandId);
 
-	Item selectItemDetails(Long itemId);
+	Optional<Item> selectItemDetails(Long itemId);
 }

@@ -10,6 +10,10 @@
         <result property="registeredAt" column="registered_at"/>
     </resultMap>
 
+    <resultMap id="inventoryResultMap" type="Inventory">
+        <result property="expirationDate" column="expiration_date"/>
+    </resultMap>
+
     <insert id="insertSaleGiftCard" parameterType="Sale">
         INSERT INTO sale(seller_id, item_id, barcode, expiration_date, registered_at)
         VALUES (#{sellerId}, #{itemId}, #{barcode}, #{expirationDate}, #{registeredAt})
@@ -24,6 +28,13 @@
         SELECT item_id, barcode, expiration_date, registered_at FROM sale
         WHERE seller_id = #{userId}
         LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="selectGiftCardInventoriesByExpirationDate" parameterType="Long" resultMap="inventoryResultMap">
+        SELECT expiration_date, COUNT(*) count FROM sale
+        WHERE item_id = #{itemId} AND expiration_status = 0
+        GROUP BY expiration_date
+        ORDER BY expiration_date ASC
     </select>
 
 </mapper>

@@ -17,6 +17,7 @@ import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemDetailResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
+import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
 import com.ghm.giftcardfleamarket.sale.exception.SaleOptionListNotFoundException;
@@ -42,10 +43,12 @@ public class ItemService {
 	}
 
 	public ItemDetailResponse getItemDetails(Long itemId) {
-		Item item = itemMapper.selectItemDetails(itemId);
-		String brandName = brandMapper.selectBrandName(item.getBrandId());
-
-		return ItemDetailResponse.of(item, brandName);
+		return itemMapper.selectItemDetails(itemId)
+			.map(item -> {
+				String brandName = brandMapper.selectBrandName(item.getBrandId());
+				return ItemDetailResponse.of(item, brandName);
+			})
+			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
 	}
 
 	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
@@ -60,7 +63,8 @@ public class ItemService {
 	}
 
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
-		int itemPrice = itemMapper.selectItemDetails(itemId).getPrice();
-		return new SaleOptionResponse(calculatePrice(itemPrice, PROPOSAL_RATE.getRate()));
+		return itemMapper.selectItemDetails(itemId)
+			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate())))
+			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
 	}
 }
