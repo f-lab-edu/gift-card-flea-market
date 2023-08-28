@@ -9,14 +9,17 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.item.domain.Item;
+import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
-import com.ghm.giftcardfleamarket.sale.domain.Inventory;
 import com.ghm.giftcardfleamarket.sale.domain.Sale;
+import com.ghm.giftcardfleamarket.sale.dto.Inventory;
 import com.ghm.giftcardfleamarket.sale.dto.request.SaleRequest;
 import com.ghm.giftcardfleamarket.sale.dto.response.InventoryListResponse;
 import com.ghm.giftcardfleamarket.sale.dto.response.InventoryResponse;
@@ -37,6 +40,7 @@ public class SaleService {
 
 	private final SaleMapper saleMapper;
 	private final UserMapper userMapper;
+	private final BrandMapper brandMapper;
 	private final ItemMapper itemMapper;
 	private final LoginService loginService;
 
@@ -68,8 +72,13 @@ public class SaleService {
 
 	public InventoryListResponse getGiftCardInventoriesByExpirationDate(Long itemId) {
 		LocalDate currentDate = LocalDate.now();
-		int price = itemMapper.selectItemDetails(itemId).getPrice();
+		Item item = itemMapper.selectItemDetails(itemId);
 
+		if (Objects.isNull(item)) {
+			throw new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다.");
+		}
+
+		String brandName = brandMapper.selectBrandName(item.getBrandId());
 		List<Inventory> inventoryList = saleMapper.selectGiftCardInventoriesByExpirationDate(itemId);
 
 		if (CollectionUtils.isEmpty(inventoryList)) {
@@ -82,10 +91,10 @@ public class SaleService {
 				long daysBetween = currentDate.until(expirationDate, ChronoUnit.DAYS);
 
 				int salePrice = (daysBetween >= 0 && daysBetween <= 7) ?
-					calculatePrice(price, HIGH_DISCOUNT_RATE.getRate()) :
-					calculatePrice(price, DISCOUNT_RATE.getRate());
+					calculatePrice(item.getPrice(), HIGH_DISCOUNT_RATE.getRate()) :
+					calculatePrice(item.getPrice(), DISCOUNT_RATE.getRate());
 
-				return InventoryResponse.of(inventory, salePrice);
+				return InventoryResponse.of(inventory, brandName, item.getName(), salePrice);
 			})
 			.toList();
 

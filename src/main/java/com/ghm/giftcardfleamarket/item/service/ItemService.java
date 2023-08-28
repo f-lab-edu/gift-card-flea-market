@@ -8,6 +8,7 @@ import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +18,7 @@ import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemDetailResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
+import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
 import com.ghm.giftcardfleamarket.sale.exception.SaleOptionListNotFoundException;
@@ -60,7 +62,12 @@ public class ItemService {
 	}
 
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
-		int itemPrice = itemMapper.selectItemDetails(itemId).getPrice();
-		return new SaleOptionResponse(calculatePrice(itemPrice, PROPOSAL_RATE.getRate()));
+		Item item = itemMapper.selectItemDetails(itemId);
+
+		if (Objects.isNull(item)) {
+			throw new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다.");
+		}
+
+		return new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate()));
 	}
 }
