@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ghm.giftcardfleamarket.sale.domain.Inventory;
 import com.ghm.giftcardfleamarket.sale.domain.Sale;
+import com.ghm.giftcardfleamarket.sale.dto.Inventory;
 
 @Mapper
 public interface SaleMapper {

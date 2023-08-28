@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.sale.domain;
+package com.ghm.giftcardfleamarket.sale.dto;
 
 import java.time.LocalDate;
 
