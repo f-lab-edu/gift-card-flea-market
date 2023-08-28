@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
-import com.ghm.giftcardfleamarket.brand.dto.BrandListResponse;
+import com.ghm.giftcardfleamarket.brand.dto.response.BrandListResponse;
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 
 @ExtendWith(MockitoExtension.class)
