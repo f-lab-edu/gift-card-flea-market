@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.brand.dto;
+package com.ghm.giftcardfleamarket.brand.dto.response;
 
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
 

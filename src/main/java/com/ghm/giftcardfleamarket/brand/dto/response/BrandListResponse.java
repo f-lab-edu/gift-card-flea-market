@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.brand.dto;
+package com.ghm.giftcardfleamarket.brand.dto.response;
 
 import java.util.List;
 

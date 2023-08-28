@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
-import com.ghm.giftcardfleamarket.brand.dto.BrandListResponse;
-import com.ghm.giftcardfleamarket.brand.dto.BrandResponse;
+import com.ghm.giftcardfleamarket.brand.dto.response.BrandListResponse;
+import com.ghm.giftcardfleamarket.brand.dto.response.BrandResponse;
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
 import com.ghm.giftcardfleamarket.sale.exception.SaleOptionListNotFoundException;
