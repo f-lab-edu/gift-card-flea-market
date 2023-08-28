@@ -8,7 +8,6 @@ import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -44,10 +43,12 @@ public class ItemService {
 	}
 
 	public ItemDetailResponse getItemDetails(Long itemId) {
-		Item item = itemMapper.selectItemDetails(itemId);
-		String brandName = brandMapper.selectBrandName(item.getBrandId());
-
-		return ItemDetailResponse.of(item, brandName);
+		return itemMapper.selectItemDetails(itemId)
+			.map(item -> {
+				String brandName = brandMapper.selectBrandName(item.getBrandId());
+				return ItemDetailResponse.of(item, brandName);
+			})
+			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
 	}
 
 	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
@@ -62,12 +63,8 @@ public class ItemService {
 	}
 
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
-		Item item = itemMapper.selectItemDetails(itemId);
-
-		if (Objects.isNull(item)) {
-			throw new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다.");
-		}
-
-		return new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate()));
+		return itemMapper.selectItemDetails(itemId)
+			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate())))
+			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
 	}
 }

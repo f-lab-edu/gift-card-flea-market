@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -62,7 +61,8 @@ public class SaleService {
 
 		List<SaleResponse> saleResponseList = saleList.stream()
 			.map(sale -> {
-				Item item = itemMapper.selectItemDetails(sale.getItemId());
+				Item item = itemMapper.selectItemDetails(sale.getItemId())
+					.orElseThrow(() -> new ItemNotFoundException(sale.getItemId() + "에 해당하는 상품이 없습니다."));
 				return SaleResponse.of(sale, item.getName(), calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate()));
 			})
 			.toList();
@@ -72,11 +72,9 @@ public class SaleService {
 
 	public InventoryListResponse getGiftCardInventoriesByExpirationDate(Long itemId) {
 		LocalDate currentDate = LocalDate.now();
-		Item item = itemMapper.selectItemDetails(itemId);
 
-		if (Objects.isNull(item)) {
-			throw new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다.");
-		}
+		Item item = itemMapper.selectItemDetails(itemId)
+			.orElseThrow(() -> new ItemNotFoundException(itemId + "에 해당하는 상품이 없습니다."));
 
 		String brandName = brandMapper.selectBrandName(item.getBrandId());
 		List<Inventory> inventoryList = saleMapper.selectGiftCardInventoriesByExpirationDate(itemId);
