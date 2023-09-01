@@ -18,4 +18,6 @@ public interface SaleMapper {
 	List<Sale> selectMySoldGiftCards(Map<String, Object> userIdAndPageInfo);
 
 	List<Inventory> selectGiftCardInventoriesByExpirationDate(Long itemId);
+
+	void updatePurchaseStatus(Long saleId);
 }
