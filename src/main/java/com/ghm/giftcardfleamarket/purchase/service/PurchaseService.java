@@ -3,6 +3,7 @@ package com.ghm.giftcardfleamarket.purchase.service;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ghm.giftcardfleamarket.purchase.domain.Purchase;
 import com.ghm.giftcardfleamarket.purchase.dto.request.PurchaseRequest;
@@ -23,6 +24,7 @@ public class PurchaseService {
 	private final UserMapper userMapper;
 	private final LoginService loginService;
 
+	@Transactional
 	public void buyGiftCard(PurchaseRequest purchaseRequest) {
 		Purchase purchase = purchaseRequest.toEntity(findLoginUserIdInSession());
 		purchaseMapper.insertPurchaseGiftCard(purchase);
