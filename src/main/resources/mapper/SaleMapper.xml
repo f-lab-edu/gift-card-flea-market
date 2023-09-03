@@ -37,8 +37,8 @@
         ORDER BY expiration_date ASC
     </select>
 
-    <update id="updatePurchaseStatus" parameterType="Long">
-        UPDATE sale SET purchase_status = 1, updated_at = NOW()
+    <update id="updatePurchaseStatus" parameterType="map">
+        UPDATE sale SET purchase_status = #{purchaseStatus}, updated_at = NOW()
         WHERE id = #{saleId}
     </update>
 

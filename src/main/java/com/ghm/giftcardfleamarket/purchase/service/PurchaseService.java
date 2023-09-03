@@ -1,5 +1,7 @@
 package com.ghm.giftcardfleamarket.purchase.service;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.ghm.giftcardfleamarket.purchase.domain.Purchase;
@@ -23,9 +25,12 @@ public class PurchaseService {
 
 	public void buyGiftCard(PurchaseRequest purchaseRequest) {
 		Purchase purchase = purchaseRequest.toEntity(findLoginUserIdInSession());
-
 		purchaseMapper.insertPurchaseGiftCard(purchase);
-		saleMapper.updatePurchaseStatus(purchase.getSaleId());
+
+		Map<String, Object> saleIdAndPurchaseStatus = Map.ofEntries(
+			Map.entry("saleId", purchase.getSaleId()),
+			Map.entry("purchaseStatus", 1));
+		saleMapper.updatePurchaseStatus(saleIdAndPurchaseStatus);
 	}
 
 	private String findLoginUserIdInSession() {

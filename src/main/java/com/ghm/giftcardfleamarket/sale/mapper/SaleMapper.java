@@ -19,5 +19,5 @@ public interface SaleMapper {
 
 	List<Inventory> selectGiftCardInventoriesByExpirationDate(Long itemId);
 
-	void updatePurchaseStatus(Long saleId);
+	void updatePurchaseStatus(Map<String, Object> saleIdAndPurchaseStatus);
 }
