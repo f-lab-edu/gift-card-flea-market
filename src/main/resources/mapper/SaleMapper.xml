@@ -32,9 +32,14 @@
 
     <select id="selectGiftCardInventoriesByExpirationDate" parameterType="Long" resultMap="inventoryResultMap">
         SELECT expiration_date, COUNT(*) count FROM sale
-        WHERE item_id = #{itemId} AND expiration_status = 0
+        WHERE item_id = #{itemId} AND expiration_status = 0 AND purchase_status = 0
         GROUP BY expiration_date
         ORDER BY expiration_date ASC
     </select>
+
+    <update id="updatePurchaseStatus" parameterType="map">
+        UPDATE sale SET purchase_status = #{purchaseStatus}, updated_at = NOW()
+        WHERE id = #{saleId}
+    </update>
 
 </mapper>

@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
-import com.ghm.giftcardfleamarket.brand.dto.BrandResponse;
+import com.ghm.giftcardfleamarket.brand.dto.response.BrandListResponse;
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,9 +55,9 @@ class BrandServiceTest {
 	void getBrandsByCategorySuccess() {
 		given(brandMapper.selectBrandsByCategory(categoryIdAndPageInfo)).willReturn(brandList);
 
-		List<BrandResponse> result = brandService.getBrandsByCategory(1L, 0);
+		BrandListResponse result = brandService.getBrandsByCategory(1L, 0);
 
 		then(brandMapper).should().selectBrandsByCategory(categoryIdAndPageInfo);
-		assertEquals(result.size(), brandList.size());
+		assertEquals(result.getBrandResponseList().size(), brandList.size());
 	}
 }

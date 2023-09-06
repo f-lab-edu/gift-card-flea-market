@@ -3,7 +3,6 @@ package com.ghm.giftcardfleamarket.brand.service;
 import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.brand.domain.Brand;
-import com.ghm.giftcardfleamarket.brand.dto.BrandResponse;
+import com.ghm.giftcardfleamarket.brand.dto.response.BrandListResponse;
+import com.ghm.giftcardfleamarket.brand.dto.response.BrandResponse;
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.sale.dto.response.SaleOptionResponse;
 import com.ghm.giftcardfleamarket.sale.exception.SaleOptionListNotFoundException;
@@ -24,15 +24,17 @@ public class BrandService {
 
 	private final BrandMapper brandMapper;
 
-	public List<BrandResponse> getBrandsByCategory(Long categoryId, int page) {
-		ArrayList<BrandResponse> brandResponseList = new ArrayList<>();
-
+	public BrandListResponse getBrandsByCategory(Long categoryId, int page) {
 		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page,
 			BRAND_PAGE_SIZE.getPageSize());
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdAndPageInfo);
-		brandList.forEach(brand -> brandResponseList.add(BrandResponse.of(brand)));
 
-		return brandResponseList;
+		List<BrandResponse> brandResponseList =
+			brandList.stream()
+				.map(BrandResponse::of)
+				.toList();
+
+		return new BrandListResponse(brandResponseList);
 	}
 
 	public SaleOptionResponse getBrandNamesByCategory(Long categoryId) {
