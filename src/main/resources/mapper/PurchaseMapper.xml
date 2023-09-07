@@ -22,6 +22,7 @@
         SELECT P.sale_id, P.item_id, P.price, P.use_status, P.bought_at, P.used_at, P.updated_at
         FROM purchase P JOIN sale S ON P.sale_id = S.id
         WHERE P.buyer_id = #{userId} AND P.use_status = 0 AND S.expiration_status = 0
+        ORDER BY S.expiration_date ASC
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
