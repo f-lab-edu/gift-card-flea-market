@@ -13,7 +13,6 @@ public class Purchase {
 	private Long itemId;
 	private String buyerId;
 	private int price;
-	private boolean expirationStatus;
 	private boolean useStatus;
 	private LocalDateTime boughtAt;
 	private LocalDateTime usedAt;
