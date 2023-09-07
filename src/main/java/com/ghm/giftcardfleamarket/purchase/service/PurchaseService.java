@@ -1,13 +1,27 @@
 package com.ghm.giftcardfleamarket.purchase.service;
 
+import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
+import com.ghm.giftcardfleamarket.item.domain.Item;
+import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
+import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.purchase.domain.Purchase;
 import com.ghm.giftcardfleamarket.purchase.dto.request.PurchaseRequest;
+import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseListResponse;
+import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseResponse;
 import com.ghm.giftcardfleamarket.purchase.mapper.PurchaseMapper;
+import com.ghm.giftcardfleamarket.sale.domain.Sale;
+import com.ghm.giftcardfleamarket.sale.exception.SaleGiftCardNotFoundException;
 import com.ghm.giftcardfleamarket.sale.mapper.SaleMapper;
 import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
@@ -22,6 +36,8 @@ public class PurchaseService {
 	private final PurchaseMapper purchaseMapper;
 	private final SaleMapper saleMapper;
 	private final UserMapper userMapper;
+	private final BrandMapper brandMapper;
+	private final ItemMapper itemMapper;
 	private final LoginService loginService;
 
 	@Transactional
@@ -33,6 +49,37 @@ public class PurchaseService {
 			Map.entry("saleId", purchase.getSaleId()),
 			Map.entry("purchaseStatus", 1));
 		saleMapper.updatePurchaseStatus(saleIdAndPurchaseStatus);
+	}
+
+	public AvailablePurchaseListResponse getMyAvailableGiftCards(int page) {
+		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
+			PURCHASE_PAGE_SIZE.getPageSize());
+		List<Purchase> purchaseList = purchaseMapper.selectMyAvailableGiftCards(userIdAndPageInfo);
+
+		if (CollectionUtils.isEmpty(purchaseList)) {
+			return AvailablePurchaseListResponse.empty();
+		}
+
+		List<AvailablePurchaseResponse> availablePurchaseResponseList = purchaseList.stream()
+			.map(purchase -> {
+				Long itemId = purchase.getItemId();
+				Long saleId = purchase.getSaleId();
+
+				Item item = itemMapper.selectItemDetails(itemId)
+					.orElseThrow(() -> new ItemNotFoundException(itemId));
+
+				String brandName = brandMapper.selectBrandName(item.getBrandId());
+
+				LocalDate expirationDate = saleMapper.selectSaleGiftCard(saleId)
+					.map(Sale::getExpirationDate)
+					.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
+
+				return AvailablePurchaseResponse.of(purchase, brandName, item.getName(),
+					item.getPrice(), expirationDate);
+			})
+			.toList();
+
+		return new AvailablePurchaseListResponse(availablePurchaseResponseList);
 	}
 
 	private String findLoginUserIdInSession() {
