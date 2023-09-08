@@ -42,7 +42,7 @@
     </select>
 
     <select id="selectSaleGiftCard" parameterType="Long" resultMap="saleResultMap">
-        SELECT * FROM sale
+        SELECT barcode, expiration_date, expiration_status FROM sale
         WHERE id = #{id}
     </select>
 
