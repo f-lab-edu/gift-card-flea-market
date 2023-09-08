@@ -71,8 +71,6 @@ public class SaleService {
 	}
 
 	public InventoryListResponse getGiftCardInventoriesByExpirationDate(Long itemId) {
-		LocalDate currentDate = LocalDate.now();
-
 		Item item = itemMapper.selectItemDetails(itemId)
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
 
@@ -84,19 +82,21 @@ public class SaleService {
 		}
 
 		List<InventoryResponse> inventoryResponseList = inventoryList.stream()
-			.map(inventory -> {
-				LocalDate expirationDate = inventory.getExpirationDate();
-				long daysBetween = currentDate.until(expirationDate, ChronoUnit.DAYS);
-
-				int salePrice = (daysBetween >= 0 && daysBetween <= 7) ?
-					calculatePrice(item.getPrice(), HIGH_DISCOUNT_RATE.getRate()) :
-					calculatePrice(item.getPrice(), DISCOUNT_RATE.getRate());
-
-				return InventoryResponse.of(inventory, brandName, item.getName(), salePrice);
-			})
+			.map(inventory -> makeInventoryResponse(item, brandName, inventory))
 			.toList();
 
 		return new InventoryListResponse(inventoryResponseList);
+	}
+
+	private static InventoryResponse makeInventoryResponse(Item item, String brandName, Inventory inventory) {
+		LocalDate expirationDate = inventory.getExpirationDate();
+		long daysBetween = LocalDate.now().until(expirationDate, ChronoUnit.DAYS);
+
+		int salePrice = (daysBetween >= 0 && daysBetween <= 7) ?
+			calculatePrice(item.getPrice(), HIGH_DISCOUNT_RATE.getRate()) :
+			calculatePrice(item.getPrice(), DISCOUNT_RATE.getRate());
+
+		return InventoryResponse.of(inventory, brandName, item.getName(), salePrice);
 	}
 
 	private String findLoginUserIdInSession() {

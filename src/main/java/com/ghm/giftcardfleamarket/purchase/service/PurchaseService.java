@@ -61,25 +61,23 @@ public class PurchaseService {
 		}
 
 		List<AvailablePurchaseResponse> availablePurchaseResponseList = purchaseList.stream()
-			.map(purchase -> {
-				Long itemId = purchase.getItemId();
-				Long saleId = purchase.getSaleId();
-
-				Item item = itemMapper.selectItemDetails(itemId)
-					.orElseThrow(() -> new ItemNotFoundException(itemId));
-
-				String brandName = brandMapper.selectBrandName(item.getBrandId());
-
-				LocalDate expirationDate = saleMapper.selectSaleGiftCard(saleId)
-					.map(Sale::getExpirationDate)
-					.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
-
-				return AvailablePurchaseResponse.of(purchase, brandName, item.getName(),
-					item.getPrice(), expirationDate);
-			})
+			.map(purchase -> makeAvailablePurchaseResponse(purchase, purchase.getItemId(), purchase.getSaleId()))
 			.toList();
 
 		return new AvailablePurchaseListResponse(availablePurchaseResponseList);
+	}
+
+	private AvailablePurchaseResponse makeAvailablePurchaseResponse(Purchase purchase, Long itemId, Long saleId) {
+		Item item = itemMapper.selectItemDetails(itemId)
+			.orElseThrow(() -> new ItemNotFoundException(itemId));
+
+		String brandName = brandMapper.selectBrandName(item.getBrandId());
+
+		LocalDate expirationDate = saleMapper.selectSaleGiftCard(saleId)
+			.map(Sale::getExpirationDate)
+			.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
+
+		return AvailablePurchaseResponse.of(purchase, brandName, item.getName(), item.getPrice(), expirationDate);
 	}
 
 	private String findLoginUserIdInSession() {
