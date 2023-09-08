@@ -1,6 +1,6 @@
 package com.ghm.giftcardfleamarket.brand.service;
 
-import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -39,8 +39,8 @@ class BrandServiceTest {
 
 		categoryIdAndPageInfo = Map.ofEntries(
 			Map.entry("id", 1L),
-			Map.entry("pageSize", BRAND_PAGE_SIZE.getPageSize()),
-			Map.entry("offset", PageRequest.of(0, BRAND_PAGE_SIZE.getPageSize()).getOffset()));
+			Map.entry("pageSize", BRAND.getValue()),
+			Map.entry("offset", PageRequest.of(0, BRAND.getValue()).getOffset()));
 
 		brandList = Arrays.asList(
 			new Brand("스타벅스"),

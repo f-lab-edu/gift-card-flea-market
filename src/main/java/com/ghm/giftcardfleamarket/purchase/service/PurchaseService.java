@@ -1,7 +1,7 @@
 package com.ghm.giftcardfleamarket.purchase.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -53,7 +53,7 @@ public class PurchaseService {
 
 	public AvailablePurchaseListResponse getMyAvailableGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
-			PURCHASE_PAGE_SIZE.getPageSize());
+			PURCHASE.getValue());
 		List<Purchase> purchaseList = purchaseMapper.selectMyAvailableGiftCards(userIdAndPageInfo);
 
 		if (CollectionUtils.isEmpty(purchaseList)) {

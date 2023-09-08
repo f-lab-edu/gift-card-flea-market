@@ -2,7 +2,7 @@ package com.ghm.giftcardfleamarket.sale.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
 import java.time.LocalDate;
@@ -52,7 +52,7 @@ public class SaleService {
 
 	public SaleListResponse getMySoldGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
-			SALE_PAGE_SIZE.getPageSize());
+			SALE.getValue());
 		List<Sale> saleList = saleMapper.selectMySoldGiftCards(userIdAndPageInfo);
 
 		if (CollectionUtils.isEmpty(saleList)) {

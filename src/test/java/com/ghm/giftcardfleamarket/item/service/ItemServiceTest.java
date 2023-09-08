@@ -1,7 +1,7 @@
 package com.ghm.giftcardfleamarket.item.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -44,8 +44,8 @@ class ItemServiceTest {
 
 		brandIdAndPageInfo = Map.ofEntries(
 			Map.entry("id", 1L),
-			Map.entry("pageSize", ITEM_PAGE_SIZE.getPageSize()),
-			Map.entry("offset", PageRequest.of(0, ITEM_PAGE_SIZE.getPageSize()).getOffset()));
+			Map.entry("pageSize", ITEM.getValue()),
+			Map.entry("offset", PageRequest.of(0, ITEM.getValue()).getOffset()));
 
 		itemList = Arrays.asList(
 			new Item("카페아메리카노", 4500),
