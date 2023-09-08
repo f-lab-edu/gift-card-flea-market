@@ -41,9 +41,9 @@
         ORDER BY expiration_date ASC
     </select>
 
-    <select id="selectSaleGiftCard" parameterType="Long" resultMap="saleResultMap">
+    <select id="selectSaleGiftCardDetails" parameterType="Long" resultMap="saleResultMap">
         SELECT barcode, expiration_date, expiration_status FROM sale
-        WHERE id = #{id}
+        WHERE id = #{saleId}
     </select>
 
     <update id="updatePurchaseStatus" parameterType="map">

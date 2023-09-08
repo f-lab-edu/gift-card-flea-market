@@ -88,7 +88,7 @@ public class SaleService {
 		return new InventoryListResponse(inventoryResponseList);
 	}
 
-	private static InventoryResponse makeInventoryResponse(Item item, String brandName, Inventory inventory) {
+	private InventoryResponse makeInventoryResponse(Item item, String brandName, Inventory inventory) {
 		LocalDate expirationDate = inventory.getExpirationDate();
 		long daysBetween = LocalDate.now().until(expirationDate, ChronoUnit.DAYS);
 
