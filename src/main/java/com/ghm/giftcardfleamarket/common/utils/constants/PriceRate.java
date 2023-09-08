@@ -1,17 +1,17 @@
 package com.ghm.giftcardfleamarket.common.utils.constants;
 
 public enum PriceRate {
-	DISCOUNT_RATE(10),
-	HIGH_DISCOUNT_RATE(15),
-	PROPOSAL_RATE(20);
+	STANDARD_DISCOUNT(10),
+	HIGH_DISCOUNT(15),
+	PROPOSAL(20);
 
-	private final double rate;
+	private final double value;
 
-	PriceRate(double rate) {
-		this.rate = rate;
+	PriceRate(double value) {
+		this.value = value;
 	}
 
-	public double getRate() {
-		return rate;
+	public double getValue() {
+		return value;
 	}
 }

@@ -65,7 +65,7 @@ public class ItemService {
 
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
 		return itemMapper.selectItemDetails(itemId)
-			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate())))
+			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL.getValue())))
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
 	}
 }
