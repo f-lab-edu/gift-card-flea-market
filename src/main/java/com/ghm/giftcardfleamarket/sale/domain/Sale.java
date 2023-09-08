@@ -18,8 +18,8 @@ public class Sale {
 	private String sellerId;
 	private String barcode;
 	private LocalDate expirationDate;
-	private boolean purchase_status;
-	private boolean expiration_status;
+	private boolean purchaseStatus;
+	private boolean expirationStatus;
 	private LocalDateTime registeredAt;
 	private LocalDateTime updatedAt;
 }

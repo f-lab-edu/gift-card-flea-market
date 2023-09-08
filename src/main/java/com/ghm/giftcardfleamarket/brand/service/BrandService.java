@@ -1,7 +1,7 @@
 package com.ghm.giftcardfleamarket.brand.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
 
 import java.util.List;
 import java.util.Map;
@@ -25,8 +25,7 @@ public class BrandService {
 	private final BrandMapper brandMapper;
 
 	public BrandListResponse getBrandsByCategory(Long categoryId, int page) {
-		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page,
-			BRAND_PAGE_SIZE.getPageSize());
+		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page, BRAND.getValue());
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdAndPageInfo);
 
 		List<BrandResponse> brandResponseList =

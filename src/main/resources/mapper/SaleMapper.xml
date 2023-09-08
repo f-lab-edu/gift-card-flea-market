@@ -6,8 +6,12 @@
 
     <resultMap id="saleResultMap" type="Sale">
         <result property="itemId" column="item_id"/>
+        <result property="sellerId" column="seller_id"/>
         <result property="expirationDate" column="expiration_date"/>
+        <result property="purchaseStatus" column="purchase_status"/>
+        <result property="expirationStatus" column="expiration_status"/>
         <result property="registeredAt" column="registered_at"/>
+        <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
     <resultMap id="inventoryResultMap" type="Inventory">
@@ -35,6 +39,11 @@
         WHERE item_id = #{itemId} AND expiration_status = 0 AND purchase_status = 0
         GROUP BY expiration_date
         ORDER BY expiration_date ASC
+    </select>
+
+    <select id="selectSaleGiftCard" parameterType="Long" resultMap="saleResultMap">
+        SELECT barcode, expiration_date, expiration_status FROM sale
+        WHERE id = #{id}
     </select>
 
     <update id="updatePurchaseStatus" parameterType="map">

@@ -1,7 +1,7 @@
 package com.ghm.giftcardfleamarket.item.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -44,8 +44,8 @@ class ItemServiceTest {
 
 		brandIdAndPageInfo = Map.ofEntries(
 			Map.entry("id", 1L),
-			Map.entry("pageSize", ITEM_PAGE_SIZE.getPageSize()),
-			Map.entry("offset", PageRequest.of(0, ITEM_PAGE_SIZE.getPageSize()).getOffset()));
+			Map.entry("pageSize", ITEM.getValue()),
+			Map.entry("offset", PageRequest.of(0, ITEM.getValue()).getOffset()));
 
 		itemList = Arrays.asList(
 			new Item("카페아메리카노", 4500),
@@ -57,25 +57,25 @@ class ItemServiceTest {
 			ItemResponse.builder()
 				.name("카페아메리카노")
 				.price(4500)
-				.discountPrice(calculatePrice(4500, DISCOUNT_RATE.getRate()))
+				.discountPrice(calculatePrice(4500, STANDARD_DISCOUNT.getValue()))
 				.build(),
 
 			ItemResponse.builder()
 				.name("카페라떼")
 				.price(5000)
-				.discountPrice(calculatePrice(5000, DISCOUNT_RATE.getRate()))
+				.discountPrice(calculatePrice(5000, STANDARD_DISCOUNT.getValue()))
 				.build(),
 
 			ItemResponse.builder()
 				.name("콜드브루")
 				.price(4900)
-				.discountPrice(calculatePrice(4900, DISCOUNT_RATE.getRate()))
+				.discountPrice(calculatePrice(4900, STANDARD_DISCOUNT.getValue()))
 				.build(),
 
 			ItemResponse.builder()
 				.name("자바칩 프라푸치노")
 				.price(6300)
-				.discountPrice(calculatePrice(6300, DISCOUNT_RATE.getRate()))
+				.discountPrice(calculatePrice(6300, STANDARD_DISCOUNT.getValue()))
 				.build());
 	}
 

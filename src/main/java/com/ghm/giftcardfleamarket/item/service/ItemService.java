@@ -2,7 +2,7 @@ package com.ghm.giftcardfleamarket.item.service;
 
 import static com.ghm.giftcardfleamarket.common.utils.PaginationUtil.*;
 import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.Page.*;
+import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
 import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
 
 import java.util.List;
@@ -33,8 +33,7 @@ public class ItemService {
 	public ItemListResponse getItemsByBrand(Long brandId, int page) {
 		int itemTotalCount = itemMapper.selectItemTotalCountByBrand(brandId);
 
-		Map<String, Object> brandIdAndPageInfo = makePagingQueryParamsWithMap(brandId, page,
-			ITEM_PAGE_SIZE.getPageSize());
+		Map<String, Object> brandIdAndPageInfo = makePagingQueryParamsWithMap(brandId, page, ITEM.getValue());
 		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdAndPageInfo);
 
 		List<ItemResponse> itemResponseList = itemList.stream()
@@ -66,7 +65,7 @@ public class ItemService {
 
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
 		return itemMapper.selectItemDetails(itemId)
-			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL_RATE.getRate())))
+			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL.getValue())))
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
 	}
 }

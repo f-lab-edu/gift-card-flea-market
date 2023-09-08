@@ -2,6 +2,7 @@ package com.ghm.giftcardfleamarket.sale.mapper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,6 +19,8 @@ public interface SaleMapper {
 	List<Sale> selectMySoldGiftCards(Map<String, Object> userIdAndPageInfo);
 
 	List<Inventory> selectGiftCardInventoriesByExpirationDate(Long itemId);
+
+	Optional<Sale> selectSaleGiftCard(Long id);
 
 	void updatePurchaseStatus(Map<String, Object> saleIdAndPurchaseStatus);
 }
