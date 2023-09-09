@@ -21,7 +21,7 @@
     <select id="selectMyAvailableGiftCards" parameterType="map" resultMap="purchaseResultMap">
         SELECT P.sale_id, P.item_id, P.price
         FROM purchase P
-        JOIN sale S ON P.sale_id = S.id
+        INNER JOIN sale S ON P.sale_id = S.id
         WHERE P.buyer_id = #{userId}
         AND P.use_status = 0
         AND S.expiration_status = 0
@@ -32,7 +32,7 @@
     <select id="selectMyAvailableGiftCardDetails" parameterType="map" resultMap="purchaseResultMap">
         SELECT P.sale_id, P.item_id, P.price, P.bought_at
         FROM purchase P
-        JOIN sale S ON P.sale_id = S.id
+        INNER JOIN sale S ON P.sale_id = S.id
         WHERE P.buyer_id = #{userId}
         AND P.id = #{purchaseId}
         AND P.use_status = 0
