@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ghm.giftcardfleamarket.purchase.mapper.PurchaseMapper">
-
+    
     <resultMap id="purchaseResultMap" type="Purchase">
         <result property="saleId" column="sale_id"/>
         <result property="itemId" column="item_id"/>
@@ -12,12 +12,12 @@
         <result property="usedAt" column="used_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
-
+    
     <insert id="insertPurchaseGiftCard" parameterType="Purchase">
         INSERT INTO purchase(sale_id, item_id, buyer_id, price, bought_at)
         VALUES (#{saleId}, #{itemId}, #{buyerId}, #{price}, #{boughtAt})
     </insert>
-
+    
     <select id="selectMyAvailableGiftCards" parameterType="map" resultMap="purchaseResultMap">
         SELECT P.sale_id, P.item_id, P.price
         FROM purchase P
@@ -29,7 +29,7 @@
         ORDER BY S.expiration_date ASC
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
-
+    
     <select id="selectMyAvailableGiftCardDetails" parameterType="map" resultMap="purchaseResultMap">
         SELECT P.sale_id, P.item_id, P.price, P.bought_at
         FROM purchase P
