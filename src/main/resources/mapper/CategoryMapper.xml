@@ -5,7 +5,8 @@
 <mapper namespace="com.ghm.giftcardfleamarket.category.mapper.CategoryMapper">
 
     <select id="selectAllCategoryName" resultType="String">
-        SELECT name FROM category
+        SELECT name
+        FROM category
         ORDER BY id ASC
     </select>
 

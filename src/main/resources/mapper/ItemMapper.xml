@@ -9,7 +9,8 @@
     </resultMap>
 
     <select id="selectItemsByBrand" parameterType="map" resultType="Item">
-        SELECT name, price FROM item
+        SELECT name, price
+        FROM item
         WHERE brand_id = #{id}
         ORDER BY id ASC
         <if test="pageSize != null and offset != null">
@@ -18,12 +19,14 @@
     </select>
 
     <select id="selectItemTotalCountByBrand" parameterType="Long" resultType="int">
-        SELECT count(*) FROM item
+        SELECT count(*)
+        FROM item
         WHERE brand_id = #{brandId}
     </select>
 
     <select id="selectItemDetails" parameterType="Long" resultMap="itemResultMap">
-        SELECT name, price, brand_id FROM item
+        SELECT name, price, brand_id
+        FROM item
         WHERE id = #{itemId}
     </select>
 

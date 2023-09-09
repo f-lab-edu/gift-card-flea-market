@@ -29,25 +29,31 @@
     </select>
 
     <select id="selectMySoldGiftCards" parameterType="map" resultMap="saleResultMap">
-        SELECT item_id, barcode, expiration_date, registered_at FROM sale
+        SELECT item_id, barcode, expiration_date, registered_at
+        FROM sale
         WHERE seller_id = #{userId}
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
     <select id="selectGiftCardInventoriesByExpirationDate" parameterType="Long" resultMap="inventoryResultMap">
-        SELECT expiration_date, COUNT(*) count FROM sale
-        WHERE item_id = #{itemId} AND expiration_status = 0 AND purchase_status = 0
+        SELECT expiration_date, COUNT(*) count
+        FROM sale
+        WHERE item_id = #{itemId}
+        AND expiration_status = 0
+        AND purchase_status = 0
         GROUP BY expiration_date
         ORDER BY expiration_date ASC
     </select>
 
     <select id="selectSaleGiftCardDetails" parameterType="Long" resultMap="saleResultMap">
-        SELECT barcode, expiration_date, expiration_status FROM sale
+        SELECT barcode, expiration_date, expiration_status
+        FROM sale
         WHERE id = #{saleId}
     </select>
 
     <update id="updatePurchaseStatus" parameterType="map">
-        UPDATE sale SET purchase_status = #{purchaseStatus}, updated_at = NOW()
+        UPDATE sale
+        SET purchase_status = #{purchaseStatus}, updated_at = NOW()
         WHERE id = #{saleId}
     </update>
 
