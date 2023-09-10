@@ -29,6 +29,8 @@ import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 import com.ghm.giftcardfleamarket.user.service.LoginService;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -41,6 +43,13 @@ public class PurchaseService {
 	private final BrandMapper brandMapper;
 	private final ItemMapper itemMapper;
 	private final LoginService loginService;
+
+	@Getter
+	@AllArgsConstructor
+	private static class ItemBrandPair {
+		private Item item;
+		private String brandName;
+	}
 
 	@Transactional
 	public void buyGiftCard(PurchaseRequest purchaseRequest) {
@@ -80,35 +89,39 @@ public class PurchaseService {
 	}
 
 	private AvailablePurchaseDetailResponse makeAvailablePurchaseDetailResponse(Purchase purchase) {
+		ItemBrandPair pair = getItemAndBrandName(purchase);
+		Item item = pair.getItem();
 		Long saleId = purchase.getSaleId();
-		Long itemId = purchase.getItemId();
-
-		Item item = itemMapper.selectItemDetails(itemId)
-			.orElseThrow(() -> new ItemNotFoundException(itemId));
-
-		String brandName = brandMapper.selectBrandName(item.getBrandId());
 
 		Sale sale = saleMapper.selectSaleGiftCardDetails(saleId)
 			.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
 
-		return AvailablePurchaseDetailResponse.of(purchase, brandName, item.getName(), sale.getBarcode(),
+		return AvailablePurchaseDetailResponse.of(purchase, pair.getBrandName(), item.getName(), sale.getBarcode(),
 			sale.getExpirationDate());
 	}
 
 	private AvailablePurchaseResponse makeAvailablePurchaseResponse(Purchase purchase) {
-		Long itemId = purchase.getItemId();
+		ItemBrandPair pair = getItemAndBrandName(purchase);
+		Item item = pair.getItem();
 		Long saleId = purchase.getSaleId();
-
-		Item item = itemMapper.selectItemDetails(itemId)
-			.orElseThrow(() -> new ItemNotFoundException(itemId));
-
-		String brandName = brandMapper.selectBrandName(item.getBrandId());
 
 		LocalDate expirationDate = saleMapper.selectSaleGiftCardDetails(saleId)
 			.map(Sale::getExpirationDate)
 			.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
 
-		return AvailablePurchaseResponse.of(purchase, brandName, item.getName(), item.getPrice(), expirationDate);
+		return AvailablePurchaseResponse.of(purchase, pair.getBrandName(), item.getName(), item.getPrice(),
+			expirationDate);
+	}
+
+	private ItemBrandPair getItemAndBrandName(Purchase purchase) {
+		Long itemId = purchase.getItemId();
+
+		Item item = itemMapper.selectItemDetails(itemId)
+			.orElseThrow(() -> new ItemNotFoundException(itemId));
+
+		String brandName = brandMapper.selectBrandName(item.getBrandId());
+
+		return new ItemBrandPair(item, brandName);
 	}
 
 	private String findLoginUserIdInSession() {
