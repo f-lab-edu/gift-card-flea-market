@@ -39,14 +39,12 @@
         )
     </select>
 
-	<select id="selectMyAvailableGiftCardDetails" parameterType="map" resultMap="purchaseResultMap">
+	<select id="selectMyAvailableGiftCardDetails" parameterType="Long" resultMap="purchaseResultMap">
 		SELECT P.sale_id, P.item_id, P.price, P.bought_at
 		FROM purchase P
 		    INNER JOIN sale S
 		    ON P.sale_id = S.id AND S.expiration_status = 0
-		WHERE P.buyer_id = #{userId}
-		AND P.id = #{purchaseId}
-		AND P.use_status = 0
+		WHERE P.id = #{purchaseId} AND P.use_status = 0
 	</select>
 
     <update id="updateUseStatus" parameterType="Long">

@@ -2,7 +2,6 @@ package com.ghm.giftcardfleamarket.purchase.mapper;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,7 +16,7 @@ public interface PurchaseMapper {
 
 	boolean hasMyAvailablePurchaseInfo(Map<String, Object> userIdAndPurchaseId);
 
-	Optional<Purchase> selectMyAvailableGiftCardDetails(Map<String, Object> userIdAndPurchaseId);
+	Purchase selectMyAvailableGiftCardDetails(Long purchaseId);
 
 	void updateUseStatus(Long purchaseId);
 }
