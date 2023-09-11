@@ -10,7 +10,8 @@
     </resultMap>
 
     <select id="selectBrandsByCategory" parameterType="map" resultMap="brandResultMap">
-        SELECT name, created_at, updated_at FROM brand
+        SELECT name, created_at, updated_at
+        FROM brand
         WHERE category_id = #{id}
         ORDER BY id ASC
         <if test="pageSize != null and offset != null">
@@ -19,7 +20,8 @@
     </select>
 
     <select id="selectBrandName" parameterType="Long" resultType="String">
-        SELECT name FROM brand
+        SELECT name
+        FROM brand
         WHERE id = #{brandId}
     </select>
 

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
+import com.ghm.giftcardfleamarket.purchase.exception.PurchaseGiftCardNotFoundException;
 import com.ghm.giftcardfleamarket.sale.exception.DuplicatedBarcodeException;
 import com.ghm.giftcardfleamarket.sale.exception.GiftCardInventoryNotFoundException;
 import com.ghm.giftcardfleamarket.sale.exception.SaleGiftCardNotFoundException;
@@ -85,6 +86,11 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(SaleGiftCardNotFoundException.class)
 	public ResponseEntity<String> handleSaleGiftCardNotFoundException(SaleGiftCardNotFoundException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(PurchaseGiftCardNotFoundException.class)
+	public ResponseEntity<String> handlePurchaseGiftCardNotFoundException(PurchaseGiftCardNotFoundException e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 }

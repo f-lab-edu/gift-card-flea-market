@@ -20,7 +20,7 @@ public interface SaleMapper {
 
 	List<Inventory> selectGiftCardInventoriesByExpirationDate(Long itemId);
 
-	Optional<Sale> selectSaleGiftCard(Long id);
+	Optional<Sale> selectSaleGiftCardDetails(Long saleId);
 
 	void updatePurchaseStatus(Map<String, Object> saleIdAndPurchaseStatus);
 }

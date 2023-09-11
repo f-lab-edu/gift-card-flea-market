@@ -19,12 +19,14 @@
     </select>
 
     <select id="selectUserByUserId" parameterType="String" resultMap="userResultMap">
-        SELECT id, user_id, password FROM user
+        SELECT id, user_id, password
+        FROM user
         WHERE user_id = #{userId}
     </select>
 
     <select id="selectUserIdById" parameterType="Long" resultType="String">
-        SELECT user_id FROM user
+        SELECT user_id
+        FROM user
         WHERE id = #{id}
     </select>
 

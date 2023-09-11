@@ -17,8 +17,10 @@ import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.purchase.domain.Purchase;
 import com.ghm.giftcardfleamarket.purchase.dto.request.PurchaseRequest;
+import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseDetailResponse;
 import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseListResponse;
 import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseResponse;
+import com.ghm.giftcardfleamarket.purchase.exception.PurchaseGiftCardNotFoundException;
 import com.ghm.giftcardfleamarket.purchase.mapper.PurchaseMapper;
 import com.ghm.giftcardfleamarket.sale.domain.Sale;
 import com.ghm.giftcardfleamarket.sale.exception.SaleGiftCardNotFoundException;
@@ -27,6 +29,8 @@ import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 import com.ghm.giftcardfleamarket.user.service.LoginService;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,6 +43,13 @@ public class PurchaseService {
 	private final BrandMapper brandMapper;
 	private final ItemMapper itemMapper;
 	private final LoginService loginService;
+
+	@Getter
+	@AllArgsConstructor
+	private static class ItemBrandPair {
+		private Item item;
+		private String brandName;
+	}
 
 	@Transactional
 	public void buyGiftCard(PurchaseRequest purchaseRequest) {
@@ -61,23 +72,56 @@ public class PurchaseService {
 		}
 
 		List<AvailablePurchaseResponse> availablePurchaseResponseList = purchaseList.stream()
-			.map(purchase -> makeAvailablePurchaseResponse(purchase, purchase.getItemId(), purchase.getSaleId()))
+			.map(this::makeAvailablePurchaseResponse)
 			.toList();
 
 		return new AvailablePurchaseListResponse(availablePurchaseResponseList);
 	}
 
-	private AvailablePurchaseResponse makeAvailablePurchaseResponse(Purchase purchase, Long itemId, Long saleId) {
+	public AvailablePurchaseDetailResponse getMyAvailableGiftCardDetails(Long purchaseId) {
+		Map<String, Object> userIdAndPurchaseId = Map.ofEntries(
+			Map.entry("userId", findLoginUserIdInSession()),
+			Map.entry("purchaseId", purchaseId));
+
+		return purchaseMapper.selectMyAvailableGiftCardDetails(userIdAndPurchaseId)
+			.map(this::makeAvailablePurchaseDetailResponse)
+			.orElseThrow(() -> new PurchaseGiftCardNotFoundException(purchaseId));
+	}
+
+	private AvailablePurchaseDetailResponse makeAvailablePurchaseDetailResponse(Purchase purchase) {
+		ItemBrandPair pair = getItemAndBrandName(purchase);
+		Item item = pair.getItem();
+		Long saleId = purchase.getSaleId();
+
+		Sale sale = saleMapper.selectSaleGiftCardDetails(saleId)
+			.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
+
+		return AvailablePurchaseDetailResponse.of(purchase, pair.getBrandName(), item.getName(), sale.getBarcode(),
+			sale.getExpirationDate());
+	}
+
+	private AvailablePurchaseResponse makeAvailablePurchaseResponse(Purchase purchase) {
+		ItemBrandPair pair = getItemAndBrandName(purchase);
+		Item item = pair.getItem();
+		Long saleId = purchase.getSaleId();
+
+		LocalDate expirationDate = saleMapper.selectSaleGiftCardDetails(saleId)
+			.map(Sale::getExpirationDate)
+			.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
+
+		return AvailablePurchaseResponse.of(purchase, pair.getBrandName(), item.getName(), item.getPrice(),
+			expirationDate);
+	}
+
+	private ItemBrandPair getItemAndBrandName(Purchase purchase) {
+		Long itemId = purchase.getItemId();
+
 		Item item = itemMapper.selectItemDetails(itemId)
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
 
 		String brandName = brandMapper.selectBrandName(item.getBrandId());
 
-		LocalDate expirationDate = saleMapper.selectSaleGiftCard(saleId)
-			.map(Sale::getExpirationDate)
-			.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
-
-		return AvailablePurchaseResponse.of(purchase, brandName, item.getName(), item.getPrice(), expirationDate);
+		return new ItemBrandPair(item, brandName);
 	}
 
 	private String findLoginUserIdInSession() {
