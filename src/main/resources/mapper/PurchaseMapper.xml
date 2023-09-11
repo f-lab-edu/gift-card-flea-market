@@ -28,6 +28,17 @@
 		LIMIT #{pageSize} OFFSET #{offset}
 	</select>
 
+    <select id="hasMyAvailablePurchaseInfo" parameterType="map" resultType="boolean">
+        SELECT EXISTS
+        (
+            SELECT id
+            FROM purchase
+            WHERE buyer_id = #{userId}
+            AND id = #{purchaseId}
+            AND use_status = 0
+        )
+    </select>
+
 	<select id="selectMyAvailableGiftCardDetails" parameterType="map" resultMap="purchaseResultMap">
 		SELECT P.sale_id, P.item_id, P.price, P.bought_at
 		FROM purchase P
@@ -37,5 +48,11 @@
 		AND P.id = #{purchaseId}
 		AND P.use_status = 0
 	</select>
+
+    <update id="updateUseStatus" parameterType="Long">
+        UPDATE purchase
+        SET use_status = 1, used_at = NOW()
+        WHERE id = #{purchaseId} AND use_status = 0
+    </update>
 
 </mapper>
