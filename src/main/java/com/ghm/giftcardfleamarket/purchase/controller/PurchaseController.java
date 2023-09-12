@@ -3,6 +3,7 @@ package com.ghm.giftcardfleamarket.purchase.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,5 +41,11 @@ public class PurchaseController {
 	public ResponseEntity<AvailablePurchaseDetailResponse> getMyAvailableGiftCardDetails(
 		@PathVariable Long purchaseId) {
 		return new ResponseEntity<>(purchaseService.getMyAvailableGiftCardDetails(purchaseId), HttpStatus.OK);
+	}
+
+	@PatchMapping("/{purchaseId}")
+	public ResponseEntity<Void> confirmGiftCardUsage(@PathVariable Long purchaseId) {
+		purchaseService.confirmGiftCardUsage(purchaseId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

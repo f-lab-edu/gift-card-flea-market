@@ -79,13 +79,25 @@ public class PurchaseService {
 	}
 
 	public AvailablePurchaseDetailResponse getMyAvailableGiftCardDetails(Long purchaseId) {
+		checkMyAvailablePurchaseInfo(purchaseId);
+		Purchase purchase = purchaseMapper.selectMyAvailableGiftCardDetails(purchaseId);
+
+		return makeAvailablePurchaseDetailResponse(purchase);
+	}
+	
+	public void confirmGiftCardUsage(Long purchaseId) {
+		checkMyAvailablePurchaseInfo(purchaseId);
+		purchaseMapper.updateUseStatus(purchaseId);
+	}
+
+	private void checkMyAvailablePurchaseInfo(Long purchaseId) {
 		Map<String, Object> userIdAndPurchaseId = Map.ofEntries(
 			Map.entry("userId", findLoginUserIdInSession()),
 			Map.entry("purchaseId", purchaseId));
 
-		return purchaseMapper.selectMyAvailableGiftCardDetails(userIdAndPurchaseId)
-			.map(this::makeAvailablePurchaseDetailResponse)
-			.orElseThrow(() -> new PurchaseGiftCardNotFoundException(purchaseId));
+		if (!purchaseMapper.hasMyAvailablePurchaseInfo(userIdAndPurchaseId)) {
+			throw new PurchaseGiftCardNotFoundException(purchaseId);
+		}
 	}
 
 	private AvailablePurchaseDetailResponse makeAvailablePurchaseDetailResponse(Purchase purchase) {
