@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ghm.giftcardfleamarket.purchase.dto.request.PurchaseRequest;
 import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseDetailResponse;
 import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseListResponse;
+import com.ghm.giftcardfleamarket.purchase.dto.response.UsedOrExpiredPurchaseListResponse;
 import com.ghm.giftcardfleamarket.purchase.service.PurchaseService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,10 +32,16 @@ public class PurchaseController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@GetMapping
+	@GetMapping("/available")
 	public ResponseEntity<AvailablePurchaseListResponse> getMyAvailableGiftCards(
 		@RequestParam(defaultValue = "0") int page) {
 		return new ResponseEntity<>(purchaseService.getMyAvailableGiftCards(page), HttpStatus.OK);
+	}
+
+	@GetMapping("/used-or-expired")
+	public ResponseEntity<UsedOrExpiredPurchaseListResponse> getMyUsedOrExpiredGiftCards(
+		@RequestParam(defaultValue = "0") int page) {
+		return new ResponseEntity<>(purchaseService.getMyUsedOrExpiredGiftCards(page), HttpStatus.OK);
 	}
 
 	@GetMapping("/{purchaseId}")

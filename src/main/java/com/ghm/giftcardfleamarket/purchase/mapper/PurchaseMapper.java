@@ -14,6 +14,8 @@ public interface PurchaseMapper {
 
 	List<Purchase> selectMyAvailableGiftCards(Map<String, Object> userIdAndPageInfo);
 
+	List<Purchase> selectMyUsedOrExpiredGiftCards(Map<String, Object> userIdAndPageInfo);
+
 	boolean hasMyAvailablePurchaseInfo(Map<String, Object> userIdAndPurchaseId);
 
 	Purchase selectMyAvailableGiftCardDetails(Long purchaseId);
