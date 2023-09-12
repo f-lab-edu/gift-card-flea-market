@@ -25,7 +25,11 @@
 
     <select id="hasBarcode" parameterType="String" resultType="boolean">
         SELECT EXISTS
-        (SELECT barcode FROM sale WHERE barcode = #{barcode})
+        (
+            SELECT barcode
+            FROM sale
+            WHERE barcode = #{barcode}
+        )
     </select>
 
     <select id="selectMySoldGiftCards" parameterType="map" resultMap="saleResultMap">
