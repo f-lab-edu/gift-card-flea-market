@@ -20,6 +20,8 @@ import com.ghm.giftcardfleamarket.purchase.dto.request.PurchaseRequest;
 import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseDetailResponse;
 import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseListResponse;
 import com.ghm.giftcardfleamarket.purchase.dto.response.AvailablePurchaseResponse;
+import com.ghm.giftcardfleamarket.purchase.dto.response.UsedOrExpiredPurchaseListResponse;
+import com.ghm.giftcardfleamarket.purchase.dto.response.UsedOrExpiredPurchaseResponse;
 import com.ghm.giftcardfleamarket.purchase.exception.PurchaseGiftCardNotFoundException;
 import com.ghm.giftcardfleamarket.purchase.mapper.PurchaseMapper;
 import com.ghm.giftcardfleamarket.sale.domain.Sale;
@@ -64,7 +66,7 @@ public class PurchaseService {
 
 	public AvailablePurchaseListResponse getMyAvailableGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
-			PURCHASE.getValue());
+			PURCHASE);
 		List<Purchase> purchaseList = purchaseMapper.selectMyAvailableGiftCards(userIdAndPageInfo);
 
 		if (CollectionUtils.isEmpty(purchaseList)) {
@@ -78,13 +80,29 @@ public class PurchaseService {
 		return new AvailablePurchaseListResponse(availablePurchaseResponseList);
 	}
 
+	public UsedOrExpiredPurchaseListResponse getMyUsedOrExpiredGiftCards(int page) {
+		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
+			PURCHASE);
+		List<Purchase> purchaseList = purchaseMapper.selectMyUsedOrExpiredGiftCards(userIdAndPageInfo);
+
+		if (CollectionUtils.isEmpty(purchaseList)) {
+			return UsedOrExpiredPurchaseListResponse.empty();
+		}
+
+		List<UsedOrExpiredPurchaseResponse> usedOrExpiredPurchaseResponseList = purchaseList.stream()
+			.map(this::makeUsedOrExpiredPurchaseResponse)
+			.toList();
+
+		return new UsedOrExpiredPurchaseListResponse(usedOrExpiredPurchaseResponseList);
+	}
+
 	public AvailablePurchaseDetailResponse getMyAvailableGiftCardDetails(Long purchaseId) {
 		checkMyAvailablePurchaseInfo(purchaseId);
 		Purchase purchase = purchaseMapper.selectMyAvailableGiftCardDetails(purchaseId);
 
 		return makeAvailablePurchaseDetailResponse(purchase);
 	}
-	
+
 	public void confirmGiftCardUsage(Long purchaseId) {
 		checkMyAvailablePurchaseInfo(purchaseId);
 		purchaseMapper.updateUseStatus(purchaseId);
@@ -110,6 +128,18 @@ public class PurchaseService {
 
 		return AvailablePurchaseDetailResponse.of(purchase, pair.getBrandName(), item.getName(), sale.getBarcode(),
 			sale.getExpirationDate());
+	}
+
+	private UsedOrExpiredPurchaseResponse makeUsedOrExpiredPurchaseResponse(Purchase purchase) {
+		ItemBrandPair pair = getItemAndBrandName(purchase);
+		Item item = pair.getItem();
+		Long saleId = purchase.getSaleId();
+
+		Sale sale = saleMapper.selectSaleGiftCardDetails(saleId)
+			.orElseThrow(() -> new SaleGiftCardNotFoundException(saleId));
+
+		return UsedOrExpiredPurchaseResponse.of(purchase, pair.getBrandName(), item.getName(), item.getPrice(),
+			sale.getExpirationDate(), sale.isExpirationStatus());
 	}
 
 	private AvailablePurchaseResponse makeAvailablePurchaseResponse(Purchase purchase) {

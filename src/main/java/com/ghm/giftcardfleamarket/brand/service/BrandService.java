@@ -25,7 +25,7 @@ public class BrandService {
 	private final BrandMapper brandMapper;
 
 	public BrandListResponse getBrandsByCategory(Long categoryId, int page) {
-		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page, BRAND.getValue());
+		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page, BRAND);
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdAndPageInfo);
 
 		List<BrandResponse> brandResponseList =

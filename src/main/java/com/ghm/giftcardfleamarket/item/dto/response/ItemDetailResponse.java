@@ -20,7 +20,7 @@ public class ItemDetailResponse {
 		return ItemDetailResponse.builder()
 			.itemName(item.getName())
 			.price(item.getPrice())
-			.discountPrice(calculatePrice(item.getPrice(), STANDARD_DISCOUNT.getValue()))
+			.discountPrice(calculatePrice(item.getPrice(), STANDARD_DISCOUNT))
 			.brandName(brandName)
 			.build();
 	}

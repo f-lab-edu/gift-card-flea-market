@@ -33,7 +33,7 @@ public class ItemService {
 	public ItemListResponse getItemsByBrand(Long brandId, int page) {
 		int itemTotalCount = itemMapper.selectItemTotalCountByBrand(brandId);
 
-		Map<String, Object> brandIdAndPageInfo = makePagingQueryParamsWithMap(brandId, page, ITEM.getValue());
+		Map<String, Object> brandIdAndPageInfo = makePagingQueryParamsWithMap(brandId, page, ITEM);
 		List<Item> itemList = itemMapper.selectItemsByBrand(brandIdAndPageInfo);
 
 		List<ItemResponse> itemResponseList = itemList.stream()
@@ -65,7 +65,7 @@ public class ItemService {
 
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
 		return itemMapper.selectItemDetails(itemId)
-			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL.getValue())))
+			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL)))
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
 	}
 }

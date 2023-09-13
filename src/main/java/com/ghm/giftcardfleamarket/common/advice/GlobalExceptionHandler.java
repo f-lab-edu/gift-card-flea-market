@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.common.handler;
+package com.ghm.giftcardfleamarket.common.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
