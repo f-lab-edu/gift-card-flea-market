@@ -66,7 +66,7 @@ public class PurchaseService {
 
 	public AvailablePurchaseListResponse getMyAvailableGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
-			PURCHASE.getValue());
+			PURCHASE);
 		List<Purchase> purchaseList = purchaseMapper.selectMyAvailableGiftCards(userIdAndPageInfo);
 
 		if (CollectionUtils.isEmpty(purchaseList)) {
@@ -82,7 +82,7 @@ public class PurchaseService {
 
 	public UsedOrExpiredPurchaseListResponse getMyUsedOrExpiredGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
-			PURCHASE.getValue());
+			PURCHASE);
 		List<Purchase> purchaseList = purchaseMapper.selectMyUsedOrExpiredGiftCards(userIdAndPageInfo);
 
 		if (CollectionUtils.isEmpty(purchaseList)) {

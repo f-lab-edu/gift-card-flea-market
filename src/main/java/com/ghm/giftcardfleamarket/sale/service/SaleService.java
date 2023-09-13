@@ -51,8 +51,7 @@ public class SaleService {
 	}
 
 	public SaleListResponse getMySoldGiftCards(int page) {
-		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
-			SALE.getValue());
+		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page, SALE);
 		List<Sale> saleList = saleMapper.selectMySoldGiftCards(userIdAndPageInfo);
 
 		if (CollectionUtils.isEmpty(saleList)) {
