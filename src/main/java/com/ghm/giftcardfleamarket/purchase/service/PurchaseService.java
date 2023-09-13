@@ -7,13 +7,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
+import com.ghm.giftcardfleamarket.common.BaseService;
+import com.ghm.giftcardfleamarket.common.ItemBrandPair;
 import com.ghm.giftcardfleamarket.item.domain.Item;
-import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.purchase.domain.Purchase;
 import com.ghm.giftcardfleamarket.purchase.dto.request.PurchaseRequest;
@@ -27,30 +29,21 @@ import com.ghm.giftcardfleamarket.purchase.mapper.PurchaseMapper;
 import com.ghm.giftcardfleamarket.sale.domain.Sale;
 import com.ghm.giftcardfleamarket.sale.exception.SaleGiftCardNotFoundException;
 import com.ghm.giftcardfleamarket.sale.mapper.SaleMapper;
-import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
 import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
 import com.ghm.giftcardfleamarket.user.service.LoginService;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
-public class PurchaseService {
+public class PurchaseService extends BaseService {
 
 	private final PurchaseMapper purchaseMapper;
 	private final SaleMapper saleMapper;
-	private final UserMapper userMapper;
-	private final BrandMapper brandMapper;
-	private final ItemMapper itemMapper;
-	private final LoginService loginService;
 
-	@Getter
-	@AllArgsConstructor
-	private static class ItemBrandPair {
-		private Item item;
-		private String brandName;
+	@Autowired
+	public PurchaseService(ItemMapper itemMapper, BrandMapper brandMapper, LoginService loginService,
+		UserMapper userMapper, PurchaseMapper purchaseMapper, SaleMapper saleMapper) {
+		super(itemMapper, brandMapper, loginService, userMapper);
+		this.purchaseMapper = purchaseMapper;
+		this.saleMapper = saleMapper;
 	}
 
 	@Transactional
@@ -153,20 +146,5 @@ public class PurchaseService {
 
 		return AvailablePurchaseResponse.of(purchase, pair.getBrandName(), item.getName(), item.getPrice(),
 			expirationDate);
-	}
-
-	private ItemBrandPair getItemAndBrandName(Long itemId) {
-		Item item = itemMapper.selectItemDetails(itemId)
-			.orElseThrow(() -> new ItemNotFoundException(itemId));
-
-		String brandName = brandMapper.selectBrandName(item.getBrandId());
-
-		return new ItemBrandPair(item, brandName);
-	}
-
-	private String findLoginUserIdInSession() {
-		return loginService.getLoginUser()
-			.map(userMapper::selectUserIdById)
-			.orElseThrow(() -> new UnauthorizedUserException("로그인 후 이용 가능합니다."));
 	}
 }
