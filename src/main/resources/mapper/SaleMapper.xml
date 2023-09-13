@@ -26,7 +26,7 @@
     <select id="hasBarcode" parameterType="String" resultType="boolean">
         SELECT EXISTS
         (
-            SELECT barcode
+            SELECT 1
             FROM sale
             WHERE barcode = #{barcode}
         )

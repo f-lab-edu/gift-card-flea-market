@@ -43,7 +43,7 @@
     <select id="hasMyAvailablePurchaseInfo" parameterType="map" resultType="boolean">
         SELECT EXISTS
         (
-            SELECT id
+            SELECT 1
             FROM purchase
             WHERE buyer_id = #{userId}
             AND id = #{purchaseId}

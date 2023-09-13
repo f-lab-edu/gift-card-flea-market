@@ -15,7 +15,11 @@
 
     <select id="hasUserId" parameterType="String" resultType="boolean">
         SELECT EXISTS
-        (SELECT id FROM user WHERE user_id = #{userId})
+        (
+            SELECT 1
+            FROM user
+            WHERE user_id = #{userId}
+        )
     </select>
 
     <select id="selectUserByUserId" parameterType="String" resultMap="userResultMap">
