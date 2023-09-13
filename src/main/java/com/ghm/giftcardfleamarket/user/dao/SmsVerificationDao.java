@@ -1,6 +1,7 @@
 package com.ghm.giftcardfleamarket.user.dao;
 
 import java.time.Duration;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -21,8 +22,8 @@ public class SmsVerificationDao {
 		redisTemplate.opsForValue().set(phone, verificationCode, Duration.ofMillis(TIMEOUT_IN_MILLIS));
 	}
 
-	public String getVerificationCode(String phone) {
-		return redisTemplate.opsForValue().get(phone);
+	public Optional<String> getVerificationCode(String phone) {
+		return Optional.ofNullable(redisTemplate.opsForValue().get(phone));
 	}
 
 	public void deleteVerificationCode(String phone) {

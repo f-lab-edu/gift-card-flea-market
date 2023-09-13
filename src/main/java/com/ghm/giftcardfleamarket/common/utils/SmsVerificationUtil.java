@@ -89,9 +89,7 @@ public class SmsVerificationUtil {
 		}
 
 		byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
-		String encodeBase64String = Base64.encodeBase64String(rawHmac);
-
-		return encodeBase64String;
+		return Base64.encodeBase64String(rawHmac);
 	}
 
 	@Value("${ncp.access-key}")
