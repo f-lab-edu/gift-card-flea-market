@@ -119,7 +119,7 @@ public class PurchaseService {
 	}
 
 	private AvailablePurchaseDetailResponse makeAvailablePurchaseDetailResponse(Purchase purchase) {
-		ItemBrandPair pair = getItemAndBrandName(purchase);
+		ItemBrandPair pair = getItemAndBrandName(purchase.getItemId());
 		Item item = pair.getItem();
 		Long saleId = purchase.getSaleId();
 
@@ -131,7 +131,7 @@ public class PurchaseService {
 	}
 
 	private UsedOrExpiredPurchaseResponse makeUsedOrExpiredPurchaseResponse(Purchase purchase) {
-		ItemBrandPair pair = getItemAndBrandName(purchase);
+		ItemBrandPair pair = getItemAndBrandName(purchase.getItemId());
 		Item item = pair.getItem();
 		Long saleId = purchase.getSaleId();
 
@@ -143,7 +143,7 @@ public class PurchaseService {
 	}
 
 	private AvailablePurchaseResponse makeAvailablePurchaseResponse(Purchase purchase) {
-		ItemBrandPair pair = getItemAndBrandName(purchase);
+		ItemBrandPair pair = getItemAndBrandName(purchase.getItemId());
 		Item item = pair.getItem();
 		Long saleId = purchase.getSaleId();
 
@@ -155,9 +155,7 @@ public class PurchaseService {
 			expirationDate);
 	}
 
-	private ItemBrandPair getItemAndBrandName(Purchase purchase) {
-		Long itemId = purchase.getItemId();
-
+	private ItemBrandPair getItemAndBrandName(Long itemId) {
 		Item item = itemMapper.selectItemDetails(itemId)
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
 
