@@ -31,7 +31,7 @@ public class UserController {
 	private final LoginService loginService;
 
 	@PostMapping
-	public ResponseEntity<String> signUp(@RequestBody @Validated SignUpRequest signUpRequest) {
+	public ResponseEntity<Void> signUp(@RequestBody @Validated SignUpRequest signUpRequest) {
 		userService.signUp(signUpRequest);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
@@ -43,7 +43,7 @@ public class UserController {
 	}
 
 	@PostMapping("/sms-verification")
-	public ResponseEntity<String> sendSms(@RequestBody SmsVerificationRequest smsRequest) throws
+	public ResponseEntity<Void> sendSms(@RequestBody SmsVerificationRequest smsRequest) throws
 		JsonProcessingException {
 
 		smsVerificationService.sendSms(smsRequest.getPhone());
@@ -51,20 +51,20 @@ public class UserController {
 	}
 
 	@PostMapping("/sms-verification/verify")
-	public ResponseEntity<String> verify(@RequestBody @Validated SmsVerificationRequest smsRequest) {
+	public ResponseEntity<Void> verify(@RequestBody @Validated SmsVerificationRequest smsRequest) {
 		smsVerificationService.verifyVerificationCode(smsRequest);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody @Validated LoginRequest loginRequest) {
+	public ResponseEntity<Void> login(@RequestBody @Validated LoginRequest loginRequest) {
 		User user = userService.findUser(loginRequest);
 		loginService.login(user.getId());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/logout")
-	public ResponseEntity<String> logout() {
+	public ResponseEntity<Void> logout() {
 		loginService.logout();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
