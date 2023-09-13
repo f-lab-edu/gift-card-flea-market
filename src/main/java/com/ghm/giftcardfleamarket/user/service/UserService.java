@@ -1,7 +1,5 @@
 package com.ghm.giftcardfleamarket.user.service;
 
-import java.util.Optional;
-
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -51,15 +49,14 @@ public class UserService {
 	}
 
 	public User findUser(LoginRequest loginRequest) {
-		Optional<User> optionalUser = userMapper.selectUserByUserId(loginRequest.getUserId());
-		optionalUser.orElseThrow(() -> new UserIdNotFoundException("등록되지 않은 아이디입니다."));
+		User loginUser = userMapper.selectUserByUserId(loginRequest.getUserId())
+			.orElseThrow(() -> new UserIdNotFoundException("등록되지 않은 아이디입니다."));
 
-		boolean isInvalidPassword = passwordEncryptor.isMatch(loginRequest.getPassword(),
-			optionalUser.get().getPassword());
-		if (!isInvalidPassword) {
+		boolean isValidPassword = passwordEncryptor.isMatch(loginRequest.getPassword(), loginUser.getPassword());
+		if (!isValidPassword) {
 			throw new PasswordMisMatchException("비밀번호가 일치하지 않습니다.");
 		}
 
-		return optionalUser.get();
+		return loginUser;
 	}
 }
