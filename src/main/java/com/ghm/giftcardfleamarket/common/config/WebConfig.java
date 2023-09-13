@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addInterceptor(loginCheckInterceptor)
 			.order(1)
 			.addPathPatterns("/**")
-			.excludePathPatterns("/**/singUp", "/**/check-duplication/*",
+			.excludePathPatterns("/**/singUp", "/**/check-duplication",
 				"/**/sms-verification", "/**/sms-verification/*", "/**/login");
 	}
 }
