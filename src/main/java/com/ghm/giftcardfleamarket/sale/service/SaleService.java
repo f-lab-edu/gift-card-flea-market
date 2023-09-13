@@ -62,7 +62,7 @@ public class SaleService {
 			.map(sale -> {
 				Item item = itemMapper.selectItemDetails(sale.getItemId())
 					.orElseThrow(() -> new ItemNotFoundException(sale.getItemId()));
-				return SaleResponse.of(sale, item.getName(), calculatePrice(item.getPrice(), PROPOSAL.getValue()));
+				return SaleResponse.of(sale, item.getName(), calculatePrice(item.getPrice(), PROPOSAL));
 			})
 			.toList();
 
@@ -92,8 +92,8 @@ public class SaleService {
 		long daysBetween = LocalDate.now().until(expirationDate, ChronoUnit.DAYS);
 
 		int salePrice = (daysBetween >= 0 && daysBetween <= 7) ?
-			calculatePrice(item.getPrice(), HIGH_DISCOUNT.getValue()) :
-			calculatePrice(item.getPrice(), STANDARD_DISCOUNT.getValue());
+			calculatePrice(item.getPrice(), HIGH_DISCOUNT) :
+			calculatePrice(item.getPrice(), STANDARD_DISCOUNT);
 
 		return InventoryResponse.of(inventory, brandName, item.getName(), salePrice);
 	}
