@@ -20,12 +20,13 @@ import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ghm.giftcardfleamarket.common.utils.SmsVerificationUtil;
-import com.ghm.giftcardfleamarket.user.dao.SmsVerificationDao;
-import com.ghm.giftcardfleamarket.user.dto.request.SmsVerificationRequest;
-import com.ghm.giftcardfleamarket.user.dto.response.SmsApiResponse;
-import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeMisMatchException;
-import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeTimeOutException;
+import com.ghm.giftcardfleamarket.infra.sms.SmsVerificationUtil;
+import com.ghm.giftcardfleamarket.infra.sms.dao.SmsVerificationDao;
+import com.ghm.giftcardfleamarket.infra.sms.dto.request.SmsVerificationRequest;
+import com.ghm.giftcardfleamarket.infra.sms.dto.response.SmsApiResponse;
+import com.ghm.giftcardfleamarket.infra.sms.exception.VerificationCodeMisMatchException;
+import com.ghm.giftcardfleamarket.infra.sms.exception.VerificationCodeTimeOutException;
+import com.ghm.giftcardfleamarket.infra.sms.service.SmsVerificationService;
 
 @AutoConfigureWebClient(registerRestTemplate = true)
 @RestClientTest(components = {SmsVerificationService.class, SmsVerificationUtil.class})

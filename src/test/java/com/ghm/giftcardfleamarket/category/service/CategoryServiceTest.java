@@ -14,7 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ghm.giftcardfleamarket.category.mapper.CategoryMapper;
+import com.ghm.giftcardfleamarket.domain.category.mapper.CategoryMapper;
+import com.ghm.giftcardfleamarket.domain.category.service.CategoryService;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {

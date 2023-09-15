@@ -15,16 +15,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
 
-import com.ghm.giftcardfleamarket.common.utils.PasswordEncryptor;
-import com.ghm.giftcardfleamarket.user.domain.User;
-import com.ghm.giftcardfleamarket.user.dto.request.LoginRequest;
-import com.ghm.giftcardfleamarket.user.dto.request.SignUpRequest;
-import com.ghm.giftcardfleamarket.user.exception.DuplicatedEmailException;
-import com.ghm.giftcardfleamarket.user.exception.DuplicatedPhoneException;
-import com.ghm.giftcardfleamarket.user.exception.DuplicatedUserIdException;
-import com.ghm.giftcardfleamarket.user.exception.PasswordMisMatchException;
-import com.ghm.giftcardfleamarket.user.exception.UserIdNotFoundException;
-import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
+import com.ghm.giftcardfleamarket.domain.user.domain.User;
+import com.ghm.giftcardfleamarket.domain.user.dto.request.LoginRequest;
+import com.ghm.giftcardfleamarket.domain.user.dto.request.SignUpRequest;
+import com.ghm.giftcardfleamarket.domain.user.exception.DuplicatedEmailException;
+import com.ghm.giftcardfleamarket.domain.user.exception.DuplicatedPhoneException;
+import com.ghm.giftcardfleamarket.domain.user.exception.DuplicatedUserIdException;
+import com.ghm.giftcardfleamarket.domain.user.exception.PasswordMisMatchException;
+import com.ghm.giftcardfleamarket.domain.user.exception.UserIdNotFoundException;
+import com.ghm.giftcardfleamarket.domain.user.mapper.UserMapper;
+import com.ghm.giftcardfleamarket.domain.user.service.UserService;
+import com.ghm.giftcardfleamarket.global.util.PasswordEncryptor;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
