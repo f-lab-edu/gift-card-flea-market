@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.common;
+package com.ghm.giftcardfleamarket.common.model;
 
 import com.ghm.giftcardfleamarket.item.domain.Item;
 

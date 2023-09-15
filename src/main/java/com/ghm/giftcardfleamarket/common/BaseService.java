@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
+import com.ghm.giftcardfleamarket.common.model.ItemBrandPair;
 import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;

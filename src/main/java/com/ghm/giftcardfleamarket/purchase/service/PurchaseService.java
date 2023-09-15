@@ -14,7 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.common.BaseService;
-import com.ghm.giftcardfleamarket.common.ItemBrandPair;
+import com.ghm.giftcardfleamarket.common.model.ItemBrandPair;
 import com.ghm.giftcardfleamarket.item.domain.Item;
 import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
 import com.ghm.giftcardfleamarket.purchase.domain.Purchase;
