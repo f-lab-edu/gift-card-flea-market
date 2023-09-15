@@ -1,19 +1,19 @@
-package com.ghm.giftcardfleamarket.common;
+package com.ghm.giftcardfleamarket.global.common.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ghm.giftcardfleamarket.brand.mapper.BrandMapper;
-import com.ghm.giftcardfleamarket.common.model.ItemBrandPair;
-import com.ghm.giftcardfleamarket.item.domain.Item;
-import com.ghm.giftcardfleamarket.item.exception.ItemNotFoundException;
-import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
-import com.ghm.giftcardfleamarket.user.exception.UnauthorizedUserException;
-import com.ghm.giftcardfleamarket.user.mapper.UserMapper;
-import com.ghm.giftcardfleamarket.user.service.LoginService;
+import com.ghm.giftcardfleamarket.domain.brand.mapper.BrandMapper;
+import com.ghm.giftcardfleamarket.domain.item.domain.Item;
+import com.ghm.giftcardfleamarket.domain.item.exception.ItemNotFoundException;
+import com.ghm.giftcardfleamarket.domain.item.mapper.ItemMapper;
+import com.ghm.giftcardfleamarket.domain.user.exception.UnauthorizedUserException;
+import com.ghm.giftcardfleamarket.domain.user.mapper.UserMapper;
+import com.ghm.giftcardfleamarket.domain.user.service.LoginService;
+import com.ghm.giftcardfleamarket.global.common.model.ItemBrandPair;
 
 @Service
-public class BaseService {
+public class CommonService {
 
 	protected ItemMapper itemMapper;
 	private final BrandMapper brandMapper;
@@ -21,7 +21,7 @@ public class BaseService {
 	private final UserMapper userMapper;
 
 	@Autowired
-	public BaseService(ItemMapper itemMapper, BrandMapper brandMapper, LoginService loginService,
+	public CommonService(ItemMapper itemMapper, BrandMapper brandMapper, LoginService loginService,
 		UserMapper userMapper) {
 		this.itemMapper = itemMapper;
 		this.brandMapper = brandMapper;
