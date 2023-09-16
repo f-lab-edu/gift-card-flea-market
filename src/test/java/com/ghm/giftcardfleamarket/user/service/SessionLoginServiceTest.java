@@ -14,9 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpSession;
 
-import com.ghm.giftcardfleamarket.common.utils.PasswordEncryptor;
-import com.ghm.giftcardfleamarket.common.utils.constants.SessionNames;
-import com.ghm.giftcardfleamarket.user.domain.User;
+import com.ghm.giftcardfleamarket.domain.user.domain.User;
+import com.ghm.giftcardfleamarket.domain.user.service.SessionLoginService;
+import com.ghm.giftcardfleamarket.global.util.PasswordEncryptor;
+import com.ghm.giftcardfleamarket.global.util.constants.SessionNames;
 
 @ExtendWith(MockitoExtension.class)
 class SessionLoginServiceTest {

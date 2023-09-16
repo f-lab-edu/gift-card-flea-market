@@ -1,8 +1,8 @@
 package com.ghm.giftcardfleamarket.item.service;
 
-import static com.ghm.giftcardfleamarket.common.utils.PriceCalculationUtil.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.PageSize.*;
-import static com.ghm.giftcardfleamarket.common.utils.constants.PriceRate.*;
+import static com.ghm.giftcardfleamarket.global.util.PriceCalculationUtil.*;
+import static com.ghm.giftcardfleamarket.global.util.constants.PageSize.*;
+import static com.ghm.giftcardfleamarket.global.util.constants.PriceRate.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -19,10 +19,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
-import com.ghm.giftcardfleamarket.item.domain.Item;
-import com.ghm.giftcardfleamarket.item.dto.response.ItemListResponse;
-import com.ghm.giftcardfleamarket.item.dto.response.ItemResponse;
-import com.ghm.giftcardfleamarket.item.mapper.ItemMapper;
+import com.ghm.giftcardfleamarket.domain.item.domain.Item;
+import com.ghm.giftcardfleamarket.domain.item.dto.response.ItemListResponse;
+import com.ghm.giftcardfleamarket.domain.item.dto.response.ItemResponse;
+import com.ghm.giftcardfleamarket.domain.item.mapper.ItemMapper;
+import com.ghm.giftcardfleamarket.domain.item.service.ItemService;
 
 @ExtendWith(MockitoExtension.class)
 class ItemServiceTest {

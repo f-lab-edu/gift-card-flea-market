@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ghm.giftcardfleamarket.brand.mapper.BrandMapper">
+<mapper namespace="com.ghm.giftcardfleamarket.domain.brand.mapper.BrandMapper">
 
     <resultMap id="brandResultMap" type="Brand">
         <result property="createdAt" column="created_at"/>

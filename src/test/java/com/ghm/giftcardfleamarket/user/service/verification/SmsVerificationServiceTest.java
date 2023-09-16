@@ -5,6 +5,8 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,13 @@ import org.springframework.test.web.client.MockRestServiceServer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ghm.giftcardfleamarket.common.utils.SmsVerificationUtil;
-import com.ghm.giftcardfleamarket.user.dao.SmsVerificationDao;
-import com.ghm.giftcardfleamarket.user.dto.request.SmsVerificationRequest;
-import com.ghm.giftcardfleamarket.user.dto.response.SmsApiResponse;
-import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeMisMatchException;
-import com.ghm.giftcardfleamarket.user.exception.verification.VerificationCodeTimeOutException;
+import com.ghm.giftcardfleamarket.infra.sms.SmsVerificationUtil;
+import com.ghm.giftcardfleamarket.infra.sms.dao.SmsVerificationDao;
+import com.ghm.giftcardfleamarket.infra.sms.dto.request.SmsVerificationRequest;
+import com.ghm.giftcardfleamarket.infra.sms.dto.response.SmsApiResponse;
+import com.ghm.giftcardfleamarket.infra.sms.exception.VerificationCodeMisMatchException;
+import com.ghm.giftcardfleamarket.infra.sms.exception.VerificationCodeTimeOutException;
+import com.ghm.giftcardfleamarket.infra.sms.service.SmsVerificationService;
 
 @AutoConfigureWebClient(registerRestTemplate = true)
 @RestClientTest(components = {SmsVerificationService.class, SmsVerificationUtil.class})
@@ -66,7 +69,7 @@ public class SmsVerificationServiceTest {
 	@Test
 	@DisplayName("휴대폰 번호, 인증번호 일치로 인증에 성공한다.")
 	void verifyVerificationCodeSuccess() {
-		given(smsVerificationDao.getVerificationCode("01012345678")).willReturn("111111");
+		given(smsVerificationDao.getVerificationCode("01012345678")).willReturn(Optional.of("111111"));
 		SmsVerificationRequest smsRequest = new SmsVerificationRequest("01012345678", "111111");
 
 		smsVerificationService.verifyVerificationCode(smsRequest);
@@ -79,7 +82,7 @@ public class SmsVerificationServiceTest {
 	@DisplayName("인증번호 불일치로 인증에 실패한다.")
 	void verifyWithInvalidVerificationCode() {
 		// given
-		given(smsVerificationDao.getVerificationCode("01012345678")).willReturn("111111");
+		given(smsVerificationDao.getVerificationCode("01012345678")).willReturn(Optional.of("111111"));
 		SmsVerificationRequest smsRequest = new SmsVerificationRequest("01012345678", "222222");
 
 		// when & then
@@ -95,7 +98,7 @@ public class SmsVerificationServiceTest {
 	void verifyWithTimeOutVerificationCode() {
 		// given
 		SmsVerificationRequest smsRequest = new SmsVerificationRequest("01012345678", "111111");
-		given(smsVerificationDao.getVerificationCode(smsRequest.getPhone())).willReturn(null);
+		given(smsVerificationDao.getVerificationCode(smsRequest.getPhone())).willReturn(Optional.empty());
 
 		// when & then
 		assertThatThrownBy(() -> smsVerificationService.verifyVerificationCode(smsRequest))
