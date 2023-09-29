@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.domain.brand.mapper.BrandMapper;
@@ -30,6 +31,7 @@ public class ItemService {
 	private final ItemMapper itemMapper;
 	private final BrandMapper brandMapper;
 
+	@Transactional(readOnly = true)
 	public ItemListResponse getItemsByBrand(Long brandId, int page) {
 		int itemTotalCount = itemMapper.selectItemTotalCountByBrand(brandId);
 
@@ -43,6 +45,7 @@ public class ItemService {
 		return new ItemListResponse(itemTotalCount, itemResponseList);
 	}
 
+	@Transactional(readOnly = true)
 	public ItemDetailResponse getItemDetails(Long itemId) {
 		return itemMapper.selectItemDetails(itemId)
 			.map(item -> {
@@ -52,6 +55,7 @@ public class ItemService {
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
 	}
 
+	@Transactional(readOnly = true)
 	public SaleOptionResponse getItemNamesByBrand(Long brandId) {
 		Map<String, Object> idToBrandId = Map.of("id", brandId);
 		List<Item> itemList = itemMapper.selectItemsByBrand(idToBrandId);
@@ -63,6 +67,7 @@ public class ItemService {
 		return SaleOptionResponse.ofItemList(itemList);
 	}
 
+	@Transactional(readOnly = true)
 	public SaleOptionResponse getItemProposalPrice(Long itemId) {
 		return itemMapper.selectItemDetails(itemId)
 			.map(item -> new SaleOptionResponse(calculatePrice(item.getPrice(), PROPOSAL)))

@@ -57,6 +57,7 @@ public class PurchaseService extends CommonService {
 		saleMapper.updatePurchaseStatus(saleIdAndPurchaseStatus);
 	}
 
+	@Transactional(readOnly = true)
 	public AvailablePurchaseListResponse getMyAvailableGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
 			PURCHASE);
@@ -73,6 +74,7 @@ public class PurchaseService extends CommonService {
 		return new AvailablePurchaseListResponse(availablePurchaseResponseList);
 	}
 
+	@Transactional(readOnly = true)
 	public UsedOrExpiredPurchaseListResponse getMyUsedOrExpiredGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page,
 			PURCHASE);
@@ -89,6 +91,7 @@ public class PurchaseService extends CommonService {
 		return new UsedOrExpiredPurchaseListResponse(usedOrExpiredPurchaseResponseList);
 	}
 
+	@Transactional(readOnly = true)
 	public AvailablePurchaseDetailResponse getMyAvailableGiftCardDetails(Long purchaseId) {
 		checkMyAvailablePurchaseInfo(purchaseId);
 		Purchase purchase = purchaseMapper.selectMyAvailableGiftCardDetails(purchaseId);
@@ -96,6 +99,7 @@ public class PurchaseService extends CommonService {
 		return makeAvailablePurchaseDetailResponse(purchase);
 	}
 
+	@Transactional
 	public void confirmGiftCardUsage(Long purchaseId) {
 		checkMyAvailablePurchaseInfo(purchaseId);
 		purchaseMapper.updateUseStatus(purchaseId);

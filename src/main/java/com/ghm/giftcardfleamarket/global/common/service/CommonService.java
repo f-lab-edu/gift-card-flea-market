@@ -2,6 +2,7 @@ package com.ghm.giftcardfleamarket.global.common.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ghm.giftcardfleamarket.domain.brand.mapper.BrandMapper;
 import com.ghm.giftcardfleamarket.domain.item.domain.Item;
@@ -29,6 +30,7 @@ public class CommonService {
 		this.userMapper = userMapper;
 	}
 
+	@Transactional(readOnly = true)
 	public ItemBrandPair getItemAndBrandName(Long itemId) {
 		Item item = itemMapper.selectItemDetails(itemId)
 			.orElseThrow(() -> new ItemNotFoundException(itemId));
@@ -37,6 +39,7 @@ public class CommonService {
 		return new ItemBrandPair(item, brandName);
 	}
 
+	@Transactional(readOnly = true)
 	public String findLoginUserIdInSession() {
 		return loginService.getLoginUser()
 			.map(userMapper::selectUserIdById)

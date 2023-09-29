@@ -3,6 +3,7 @@ package com.ghm.giftcardfleamarket.domain.category.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.domain.category.mapper.CategoryMapper;
@@ -16,6 +17,7 @@ public class CategoryService {
 
 	private final CategoryMapper categoryMapper;
 
+	@Transactional(readOnly = true)
 	public List<String> getAllCategoryName() {
 		List<String> categoryList = categoryMapper.selectAllCategoryName();
 

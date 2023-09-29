@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.domain.brand.domain.Brand;
@@ -24,6 +25,7 @@ public class BrandService {
 
 	private final BrandMapper brandMapper;
 
+	@Transactional(readOnly = true)
 	public BrandListResponse getBrandsByCategory(Long categoryId, int page) {
 		Map<String, Object> categoryIdAndPageInfo = makePagingQueryParamsWithMap(categoryId, page, BRAND);
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(categoryIdAndPageInfo);
@@ -36,6 +38,7 @@ public class BrandService {
 		return new BrandListResponse(brandResponseList);
 	}
 
+	@Transactional(readOnly = true)
 	public SaleOptionResponse getBrandNamesByCategory(Long categoryId) {
 		Map<String, Object> idToCategoryId = Map.of("id", categoryId);
 		List<Brand> brandList = brandMapper.selectBrandsByCategory(idToCategoryId);

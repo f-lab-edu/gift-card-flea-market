@@ -2,6 +2,7 @@ package com.ghm.giftcardfleamarket.domain.user.service;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ghm.giftcardfleamarket.domain.user.domain.User;
 import com.ghm.giftcardfleamarket.domain.user.dto.request.LoginRequest;
@@ -23,6 +24,7 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final PasswordEncryptor passwordEncryptor;
 
+	@Transactional
 	public void signUp(SignUpRequest signUpRequest) {
 		String digest = passwordEncryptor.encrypt(signUpRequest.getPassword());
 		User newUser = signUpRequest.toEntity(digest);
@@ -42,12 +44,14 @@ public class UserService {
 		}
 	}
 
+	@Transactional(readOnly = true)
 	public void checkUserIdDuplication(String userId) {
 		if (userMapper.hasUserId(userId)) {
 			throw new DuplicatedUserIdException("중복된 아이디입니다.");
 		}
 	}
 
+	@Transactional(readOnly = true)
 	public User findUser(LoginRequest loginRequest) {
 		User loginUser = userMapper.selectUserByUserId(loginRequest.getUserId())
 			.orElseThrow(() -> new UserIdNotFoundException("등록되지 않은 아이디입니다."));
