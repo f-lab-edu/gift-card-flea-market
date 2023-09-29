@@ -4,7 +4,11 @@ server:
 spring:
   # MySQL
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      master:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      slave:
+        driver-class-name: com.mysql.cj.jdbc.Driver
 
   # Redis
   data:
