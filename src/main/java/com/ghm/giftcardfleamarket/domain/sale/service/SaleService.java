@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.ghm.giftcardfleamarket.domain.brand.mapper.BrandMapper;
@@ -45,6 +46,7 @@ public class SaleService extends CommonService {
 		this.saleMapper = saleMapper;
 	}
 
+	@Transactional
 	public void sellGiftCard(SaleRequest saleRequest) {
 		if (saleMapper.hasBarcode(saleRequest.getBarcode())) {
 			throw new DuplicatedBarcodeException("이미 등록된 바코드입니다.");
@@ -52,6 +54,7 @@ public class SaleService extends CommonService {
 		saleMapper.insertSaleGiftCard(saleRequest.toEntity(findLoginUserIdInSession()));
 	}
 
+	@Transactional(readOnly = true)
 	public SaleListResponse getMySoldGiftCards(int page) {
 		Map<String, Object> userIdAndPageInfo = makePagingQueryParamsWithMap(findLoginUserIdInSession(), page, SALE);
 		List<Sale> saleList = saleMapper.selectMySoldGiftCards(userIdAndPageInfo);
@@ -71,6 +74,7 @@ public class SaleService extends CommonService {
 		return new SaleListResponse(saleResponseList);
 	}
 
+	@Transactional(readOnly = true)
 	public InventoryListResponse getGiftCardInventoriesByExpirationDate(Long itemId) {
 		ItemBrandPair pair = getItemAndBrandName(itemId);
 		List<Inventory> inventoryList = saleMapper.selectGiftCardInventoriesByExpirationDate(itemId);
