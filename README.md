@@ -23,7 +23,11 @@
 - Naver Cloud Platform
 
 
+<br>
 
+## :globe_with_meridians: 서버 아키텍처
+
+<img src = "https://github.com/f-lab-edu/gift-card-flea-market/assets/74194588/3c7822c7-552b-4a13-b2c7-cd609ebdf5a8" width="80%" height="80%" />
 
 <br>
 
@@ -34,3 +38,4 @@
 &emsp;:small_blue_diamond: [UseCase](https://github.com/f-lab-edu/gift-card-flea-market/wiki/02.UseCase) <br/>
 &emsp;:small_blue_diamond: [프로젝트 컨벤션 & Rule](https://github.com/f-lab-edu/gift-card-flea-market/wiki/03.%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%BB%A8%EB%B2%A4%EC%85%98-&-Rule) <br/>
 &emsp;:small_blue_diamond: [Data Modeling](https://github.com/f-lab-edu/gift-card-flea-market/wiki/04.Data-Modeling#%EB%AC%BC%EB%A6%AC-er-diagram) <br/>
+&emsp;:small_blue_diamond: [Server Architecture](https://github.com/f-lab-edu/gift-card-flea-market/wiki/05.-Server-Architecture) <br/>
