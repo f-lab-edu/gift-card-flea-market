@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.brand.service;
+package com.ghm.giftcardfleamarket.domain.brand.service;
 
 import static com.ghm.giftcardfleamarket.global.util.constants.PageSize.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import com.ghm.giftcardfleamarket.domain.brand.domain.Brand;
 import com.ghm.giftcardfleamarket.domain.brand.dto.response.BrandListResponse;
 import com.ghm.giftcardfleamarket.domain.brand.mapper.BrandMapper;
-import com.ghm.giftcardfleamarket.domain.brand.service.BrandService;
 
 @ExtendWith(MockitoExtension.class)
 class BrandServiceTest {

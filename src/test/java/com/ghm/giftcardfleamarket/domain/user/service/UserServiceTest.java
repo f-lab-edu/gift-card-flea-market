@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.user.service;
+package com.ghm.giftcardfleamarket.domain.user.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +24,6 @@ import com.ghm.giftcardfleamarket.domain.user.exception.DuplicatedUserIdExceptio
 import com.ghm.giftcardfleamarket.domain.user.exception.PasswordMisMatchException;
 import com.ghm.giftcardfleamarket.domain.user.exception.UserIdNotFoundException;
 import com.ghm.giftcardfleamarket.domain.user.mapper.UserMapper;
-import com.ghm.giftcardfleamarket.domain.user.service.UserService;
 import com.ghm.giftcardfleamarket.global.util.PasswordEncryptor;
 
 @ExtendWith(MockitoExtension.class)

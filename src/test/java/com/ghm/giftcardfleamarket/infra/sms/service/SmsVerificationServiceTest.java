@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.user.service.verification;
+package com.ghm.giftcardfleamarket.infra.sms.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -26,7 +26,6 @@ import com.ghm.giftcardfleamarket.infra.sms.dto.request.SmsVerificationRequest;
 import com.ghm.giftcardfleamarket.infra.sms.dto.response.SmsApiResponse;
 import com.ghm.giftcardfleamarket.infra.sms.exception.VerificationCodeMisMatchException;
 import com.ghm.giftcardfleamarket.infra.sms.exception.VerificationCodeTimeOutException;
-import com.ghm.giftcardfleamarket.infra.sms.service.SmsVerificationService;
 
 @AutoConfigureWebClient(registerRestTemplate = true)
 @RestClientTest(components = {SmsVerificationService.class, SmsVerificationUtil.class})

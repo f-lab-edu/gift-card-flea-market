@@ -23,11 +23,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Create application-secret.yml file and Deploy to NCP
+      - name: Create application-secret.yml file and Deploy to NCP (Server 1)
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.NCP_SERVER_IP }}
-          port: ${{ secrets.NCP_SERVER_SSH_PORT }}
+          host: ${{ secrets.NCP_SERVER_SSH_PUBLIC_IP }}
+          port: ${{ secrets.NCP_SERVER_SSH_PORT_01 }}
           username: ${{ secrets.NCP_SERVER_USER }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           script: |
@@ -35,6 +35,22 @@ jobs:
             touch ./src/main/resources/application-secret.yml
             echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application-secret.yml
             
+            cd /root/app/flea-market
+            chmod +x ./deploy.sh
+            ./deploy.sh
+
+      - name: Create application-secret.yml file and Deploy to NCP (Server 2)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.NCP_SERVER_SSH_PUBLIC_IP }}
+          port: ${{ secrets.NCP_SERVER_SSH_PORT_02 }}
+          username: ${{ secrets.NCP_SERVER_USER }}
+          password: ${{ secrets.NCP_SERVER_PASSWORD }}
+          script: |
+            cd /root/app/flea-market/gift-card-flea-market
+            touch ./src/main/resources/application-secret.yml
+            echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application-secret.yml
+
             cd /root/app/flea-market
             chmod +x ./deploy.sh
             ./deploy.sh
