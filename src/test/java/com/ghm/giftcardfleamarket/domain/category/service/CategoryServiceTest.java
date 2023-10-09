@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.category.service;
+package com.ghm.giftcardfleamarket.domain.category.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ghm.giftcardfleamarket.domain.category.mapper.CategoryMapper;
-import com.ghm.giftcardfleamarket.domain.category.service.CategoryService;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {

@@ -1,4 +1,4 @@
-package com.ghm.giftcardfleamarket.item.service;
+package com.ghm.giftcardfleamarket.domain.item.service;
 
 import static com.ghm.giftcardfleamarket.global.util.PriceCalculationUtil.*;
 import static com.ghm.giftcardfleamarket.global.util.constants.PageSize.*;
@@ -23,7 +23,6 @@ import com.ghm.giftcardfleamarket.domain.item.domain.Item;
 import com.ghm.giftcardfleamarket.domain.item.dto.response.ItemListResponse;
 import com.ghm.giftcardfleamarket.domain.item.dto.response.ItemResponse;
 import com.ghm.giftcardfleamarket.domain.item.mapper.ItemMapper;
-import com.ghm.giftcardfleamarket.domain.item.service.ItemService;
 
 @ExtendWith(MockitoExtension.class)
 class ItemServiceTest {
