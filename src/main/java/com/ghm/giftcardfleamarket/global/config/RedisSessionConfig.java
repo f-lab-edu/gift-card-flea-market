@@ -5,26 +5,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
-public class RedisConfig {
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 1800)
+public class RedisSessionConfig {
 
-	@Value("${spring.data.redis.host}")
+	@Value("${spring.redis.session.host}")
 	private String redisHost;
 
-	@Value("${spring.data.redis.port}")
+	@Value("${spring.redis.session.port}")
 	private int redisPort;
 
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
 		return new LettuceConnectionFactory(redisHost, redisPort);
-	}
-
-	@Bean
-	public StringRedisTemplate stringRedisTemplate() {
-		StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
-		stringRedisTemplate.setConnectionFactory(redisConnectionFactory());
-		return stringRedisTemplate;
 	}
 }

@@ -11,11 +11,12 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
 
   # Redis
-  data:
-    redis:
+  redis:
+    cache:
       port: 6379
-      timeout: 180000  # 밀리초 단위로 설정
-
+    session:
+      port: 6379
+  
   # DB 접속 정보 숨기기
   profiles:
     include: secret
