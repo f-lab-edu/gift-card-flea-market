@@ -3,8 +3,7 @@ package com.ghm.giftcardfleamarket.infra.sms.dao;
 import java.time.Duration;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import lombok.RequiredArgsConstructor;
@@ -13,20 +12,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SmsVerificationDao {
 
-	private final StringRedisTemplate redisTemplate;
+	private final String PREFIX = "sms:";
+	private final long TIMEOUT_IN_MINUTE = 3L;
 
-	@Value("${spring.data.redis.timeout}")
-	private long TIMEOUT_IN_MILLIS;
+	private final RedisTemplate<String, Object> redisTemplate;
 
 	public void saveVerificationCode(String phone, String verificationCode) {
-		redisTemplate.opsForValue().set(phone, verificationCode, Duration.ofMillis(TIMEOUT_IN_MILLIS));
+		redisTemplate.opsForValue().set(PREFIX + phone, verificationCode, Duration.ofMinutes(TIMEOUT_IN_MINUTE));
 	}
 
-	public Optional<String> getVerificationCode(String phone) {
-		return Optional.ofNullable(redisTemplate.opsForValue().get(phone));
+	public Optional<Object> getVerificationCode(String phone) {
+		return Optional.ofNullable(redisTemplate.opsForValue().get(PREFIX + phone));
 	}
 
 	public void deleteVerificationCode(String phone) {
-		redisTemplate.delete(phone);
+		redisTemplate.delete(PREFIX + phone);
 	}
 }
