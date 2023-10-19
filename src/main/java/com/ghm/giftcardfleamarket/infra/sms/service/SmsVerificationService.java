@@ -47,7 +47,7 @@ public class SmsVerificationService {
 	}
 
 	public void verifyVerificationCode(SmsVerificationRequest smsRequest) {
-		String findCode = smsVerificationDao.getVerificationCode(smsRequest.getPhone())
+		String findCode = (String)smsVerificationDao.getVerificationCode(smsRequest.getPhone())
 			.orElseThrow(() -> new VerificationCodeTimeOutException("인증번호가 만료되었습니다."));
 
 		if (!findCode.equals(smsRequest.getVerificationCode())) {
