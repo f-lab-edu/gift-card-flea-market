@@ -19,6 +19,7 @@
 - MyBatis
 - MySQL
 - Redis
+- Nginx
 - Github Actions
 - Naver Cloud Platform
 
